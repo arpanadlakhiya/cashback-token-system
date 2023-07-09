@@ -1,2 +1,2 @@
-# coffee-supply-chain-hlf
-A Coffee Supply Chain Management System built on Hyperledger Fabric
+# Cashback Token System
+A Cashback Token System built on Hyperledger Fabric to provide cashback on CBDC transactions
