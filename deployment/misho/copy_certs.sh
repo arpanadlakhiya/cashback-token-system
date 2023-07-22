@@ -1,6 +1,6 @@
 CWD=$(pwd | sed 's/\/deployment/\t/g' | awk '{ print $1 }')
 HLF_NETWORK_DIR=$CWD/hlf-network/vars/keyfiles
-ORG_NAME=farmer
+ORG_NAME=misho
 
 rm -rf certs/ca/*
 rm -rf certs/peer/*

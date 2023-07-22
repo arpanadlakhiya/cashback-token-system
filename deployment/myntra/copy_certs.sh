@@ -1,6 +1,6 @@
 CWD=$(pwd | sed 's/\/deployment/\t/g' | awk '{ print $1 }')
 HLF_NETWORK_DIR=$CWD/hlf-network/vars/keyfiles
-ORG_NAME=supplier
+ORG_NAME=myntra
 
 rm -rf certs/ca/*
 rm -rf certs/peer/*

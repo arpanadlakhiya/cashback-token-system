@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ADAPTER_PATH=../adapter
-adapter_path=("./farmer" "./processor" "./roaster" "./supplier" "./retailer")
+adapter_path=("./platform" "./amazon" "./flipkart" "./misho" "./myntra")
 
 # update db scripts
 for path in ${adapter_path[@]}; do

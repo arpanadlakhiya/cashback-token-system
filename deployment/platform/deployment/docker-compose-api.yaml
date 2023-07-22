@@ -2,7 +2,7 @@ version: "3"
 services:
     api:
         container_name: ${ORG_NAME}-api
-        image: coffee-supply-chain-hlf:latest
+        image: cashback-token-chain-hlf:latest
         env_file:
             - ../${ORG_ENV_FILE}
         working_dir: /usr/app
@@ -17,11 +17,11 @@ services:
         extra_hosts:
             - orderer0.orderer:${HLF_NW_IP} 
             - ca1.${ORG_NAME}:${HLF_NW_IP}
-            - peer0.farmer:${HLF_NW_IP}
-            - peer0.processor:${HLF_NW_IP}   
-            - peer0.roaster:${HLF_NW_IP}
-            - peer0.supplier:${HLF_NW_IP}
-            - peer0.retailer:${HLF_NW_IP}
+            - peer0.platform:${HLF_NW_IP}
+            - peer0.amazon:${HLF_NW_IP}   
+            - peer0.flipkart:${HLF_NW_IP}
+            - peer0.misho:${HLF_NW_IP}
+            - peer0.myntra:${HLF_NW_IP}
         networks:
             - app-network
 

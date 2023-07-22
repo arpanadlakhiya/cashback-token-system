@@ -8,7 +8,7 @@ printf "\nCompiling code...\n"
 npm run build
 
 printf "Compilation done! Building image...\n\n"
-DOCKER_BUILDKIT=1 docker build -f deployment/Dockerfile -t coffee-supply-chain .
+DOCKER_BUILDKIT=1 docker build -f deployment/Dockerfile -t cashback-token-chain .
 
 printf "\nImage built! Starting all components...\n\n"
 cd ../deployment

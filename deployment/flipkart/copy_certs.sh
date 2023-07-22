@@ -1,6 +1,6 @@
 CWD=$(pwd | sed 's/\/deployment/\t/g' | awk '{ print $1 }')
 HLF_NETWORK_DIR=$CWD/hlf-network/vars/keyfiles
-ORG_NAME=retailer
+ORG_NAME=flipkart
 
 rm -rf certs/ca/*
 rm -rf certs/peer/*

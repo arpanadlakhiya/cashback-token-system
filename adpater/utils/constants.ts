@@ -1,5 +1,5 @@
 // HLF parameters
-export const contractName = process.env.FABRIC_CONTRACT_NAME ? process.env.FABRIC_CONTRACT_NAME : "coffee-supply-chain";
+export const contractName = process.env.FABRIC_CONTRACT_NAME ? process.env.FABRIC_CONTRACT_NAME : "cashback-token-chain";
 export const dltEventcommitTimeout = process.env.DLT_EVENT_COMMIT_TIMEOUT ? process.env.DLT_EVENT_COMMIT_TIMEOUT : 500;
 export const dltEventEndorseTimeout = process.env.DLT_EVENT_ENDORSE_TIMEOUT ? process.env.DLT_EVENT_ENDORSE_TIMEOUT : 500;
 export const grpcKeepAliveTimeout = process.env.GRPC_KEEPALIVE_TIMEOUT ? process.env.GRPC_KEEPALIVE_TIMEOUT : 180000;
