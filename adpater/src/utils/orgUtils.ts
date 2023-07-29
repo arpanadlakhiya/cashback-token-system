@@ -1,37 +1,37 @@
-import * as constants from "./constants";
+// import * as constants from "./constants";
 
-export const getRandomOrg = (arr: string[], n: number) => {
-  try {
-    let result: string[] = new Array(n),
-      len = arr.length,
-      taken = new Array(len);
+// export const getRandomOrg = (arr: string[], n: number) => {
+//   try {
+//     let result: string[] = new Array(n),
+//       len = arr.length,
+//       taken = new Array(len);
 
-    if (n > len)
-      throw new RangeError("getRandom: more elements taken than available");
+//     if (n > len)
+//       throw new RangeError("getRandom: more elements taken than available");
 
-    while (n--) {
-      const x = Math.floor(Math.random() * len);
-      result[n] = arr[x in taken ? taken[x] : x];
-      taken[x] = --len in taken ? taken[len] : len;
-    }
+//     while (n--) {
+//       const x = Math.floor(Math.random() * len);
+//       result[n] = arr[x in taken ? taken[x] : x];
+//       taken[x] = --len in taken ? taken[len] : len;
+//     }
 
-    return result;
-  } catch (err) {
-    console.error(`Error while getting random org`);
-    return [];
-  }
-}
+//     return result;
+//   } catch (err) {
+//     console.error(`Error while getting random org`);
+//     return [];
+//   }
+// }
 
-export const getEndorsingOrgs = () => {
-  const allOrgs: string[] = [
-    constants.FARMER_ORG_NAME,
-    constants.PROCESSOR_ORG_NAME,
-    constants.ROASTER_ORG_NAME,
-    constants.SUPPLIER_ORG_NAME,
-    constants.RETAILER_ORG_NAME
-  ];
+// export const getEndorsingOrgs = () => {
+//   const allOrgs: string[] = [
+//     constants.FARMER_ORG_NAME,
+//     constants.PROCESSOR_ORG_NAME,
+//     constants.ROASTER_ORG_NAME,
+//     constants.SUPPLIER_ORG_NAME,
+//     constants.RETAILER_ORG_NAME
+//   ];
 
-  const endorserBankOrgs: string[] = getRandomOrg(allOrgs, parseInt((allOrgs.length / 2).toString()));
+//   const endorserBankOrgs: string[] = getRandomOrg(allOrgs, parseInt((allOrgs.length / 2).toString()));
 
-  return endorserBankOrgs;
-}
+//   return endorserBankOrgs;
+// }

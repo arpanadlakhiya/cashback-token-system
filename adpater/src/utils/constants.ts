@@ -40,8 +40,9 @@ export const STATUS_CLAIMED = "CLAIMED";
 export const STATUS_EXPIRED = "EXPIRED";
 
 // Chaincode functions
-export const SIMULATE_TRANSACTION = "TransactionSimulator:SimulateTransaction";
 export const REGISTER_WALLET = "UserWallet:Register";
+export const CREATE_RULESET = "RulesetContract:CreateRuleset";
+export const SIMULATE_TRANSACTION = "TransactionSimulator:SimulateTransaction";
 
 // Events
 export const WALLET_REGISTRATION_EVENT = "RegisterWallet";

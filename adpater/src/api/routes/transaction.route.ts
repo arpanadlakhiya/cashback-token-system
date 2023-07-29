@@ -35,7 +35,9 @@ transactionRouter.post(
 
         const simulateTxnRes = await transactionController.simulateTransaction(
           transaction,
-          req.body.user
+          req.body.user,
+          req.body.rulesetId,
+          req.body.cashbackTokenId
         );
 
         return res
