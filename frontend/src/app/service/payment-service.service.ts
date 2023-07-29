@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { of } from 'rxjs';
+import { map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,10 @@ getAllOffers(amount : number){
     success: boolean;
     message: string;
     data: any;
-  }>(`${this.apiURL}/api/transaction/get-pre-txn-details`);
+  }>(`${this.apiURL}/api/transaction/get-pre-txn-details`).pipe(
+    map((response : any)=>
+    response.data.applicableOffers)
+  );
   }
 //   const offers = [{
 //     id: 1,
