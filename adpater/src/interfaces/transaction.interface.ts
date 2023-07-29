@@ -1,3 +1,7 @@
+export interface PreTransaction {
+	value: number
+}
+
 export interface Transaction {
 	docType: string
 	txnId: string

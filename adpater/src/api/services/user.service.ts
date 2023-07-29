@@ -164,3 +164,37 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
     );
   }
 };
+
+export const getUser = async (username: string) => {
+  try {
+    console.log(
+      `UserService : getUser :: Fetching user details for ${username}`
+    );
+
+    const dbClient = await db.getDBClient();
+
+    const user = await userDB.getUser(dbClient, username);
+
+    if (user.length === 0) {
+      return null;
+    }
+
+    const userObj: userInterface.UserDetails = {
+      userId: user.id,
+      username: user.username,
+      password: user.password,
+      email: user.email,
+      walletAddress: user.wallet_address
+    };
+
+    console.log(
+      `UserService : getUser :: Fetched user details for ${username}`
+    );
+
+    return userObj;
+  } catch (err) {
+    console.log(`UserService : getUser :: Error while fetching user details: ${err}`);
+
+    return null;
+  }
+};
