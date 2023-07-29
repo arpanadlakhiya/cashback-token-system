@@ -7,10 +7,6 @@ export interface User {
   username: string;
   password: string;
   email: string;
-  // address: string;
-  // role: string;
-  // org: string;
-  id?: string;
 }
 
 export interface UserDetails {
@@ -23,6 +19,4 @@ export interface UserDetails {
 
 export interface UserResponse {
   username: string;
-  // role: string;
-  // org: string;
 }

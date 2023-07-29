@@ -8,11 +8,12 @@ const REGISTER_USER =
 
 const GET_ALL_USER = "SELECT * FROM user";
 
-const GET_MAX_USER_ID = "SELECT MAX(id) as userId FROM USER";
+const GET_MAX_USER_ID = "SELECT MAX(id) as userid FROM USER";
 
 export const getUser = async (dbClient: Client, username: string) => {
   const result = await db.executeQuery(dbClient, GET_USER, [username]);
-  return result.rows[0];
+  console.log("result: " + JSON.stringify(result));
+  return result.rows;
 };
 
 export const getAllUsers = async (dbClient: Client, username: string) => {
@@ -22,12 +23,12 @@ export const getAllUsers = async (dbClient: Client, username: string) => {
 
 export const getMaxUserID = async (dbClient: Client) => {
   const result = await db.executeQuery(dbClient, GET_MAX_USER_ID, []);
-  return result.rows[0];
+  return result.rows;
 };
 
 export const registerUser = async (
   dbClient: Client,
-  userId: string,
+  userId: number,
   username: string,
   email: string,
   hashedPassword: string,

@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS cashbackplatform;
 
 CREATE TABLE IF NOT EXISTS user (
-  id text,
+  id int,
   username text,
   email text,
   password text,

@@ -6,4 +6,5 @@ type Wallet struct {
 	Address      string `json:"address"`
 	CreationTime string `json:"creationTime"`
 	Status       string `json:"status"`
+	Username     string `json:"username"`
 }

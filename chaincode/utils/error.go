@@ -3,7 +3,7 @@ package utils
 import "errors"
 
 var (
-	ErrNotExist          = errors.New("not existed")
+	ErrNotExist          = errors.New("does not exist")
 	ErrAlreadyExist      = errors.New("already exist")
 	ErrNotValid          = errors.New("not valid")
 	ErrNotMatched        = errors.New("not matched")

@@ -1,4 +1,4 @@
-sudo rm -rf  ./vars/chaincode/cashback-token-system/go/
+# sudo rm -rf  ./vars/chaincode/cashback-token-system/go/
 
 sudo cp -R ../smartcontracts ./vars/chaincode/cashback-token-system/go/
 sudo cp -R ../models ./vars/chaincode/cashback-token-system/go/

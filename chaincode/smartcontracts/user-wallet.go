@@ -29,8 +29,6 @@ func (wc *UserWallet) Register(
 		return false, errStr
 	}
 
-	wallet.DocType = utils.DOCTYPE_WALLET
-
 	// Putstate on ledger
 	err = utils.PutState(ctx, wallet.ID, wallet)
 	if err != nil {
@@ -102,7 +100,7 @@ func GetWalletByAddress(
 	defer res.Close()
 
 	if !res.HasNext() {
-		return nil, fmt.Errorf("wallet does not exist for address: %s", address)
+		return nil, fmt.Errorf("wallet %w for address: %s", utils.ErrNotExist, address)
 	}
 
 	return extractWallet(res)
@@ -126,7 +124,12 @@ func validateWallet(ctx contractapi.TransactionContextInterface, wallet *models.
 		return fmt.Errorf("creation time cannot be empty")
 	}
 
-	// verify wallet with same ID doesnot exist
+	// verify address is not null or empty
+	if wallet.Username == "" {
+		return fmt.Errorf("username cannot be empty")
+	}
+
+	// verify wallet with same ID does not exist
 	err := utils.VerifyStateDoesNotExist(ctx, wallet.ID)
 	if err != nil {
 		return fmt.Errorf("wallet exits %w", err)

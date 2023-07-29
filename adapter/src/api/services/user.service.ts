@@ -74,12 +74,13 @@ export const register = async (registrationDetails: userInterface.User) => {
         const maxUserId = await userDB.getMaxUserID(dbClient);
 
         let userId = 0;
-
-        userId = maxUserId.userId === null ? 1 : maxUserId.userId + 1;
+        if (maxUserId.length > 0) {
+          userId = maxUserId[0].userid === null ? 1 : maxUserId[0].userid + 1;
+        }
 
         await userDB.registerUser(
           dbClient,
-          userId.toString(),
+          userId,
           registrationDetails.username,
           registrationDetails.email,
           hashedPassword,
@@ -127,10 +128,9 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
     }
 
     const userObj: userInterface.User = {
-      id: user.id.toString(),
-      username: user.username,
-      password: user.password,
-      email: user.email
+      username: user[0].username,
+      password: user[0].password,
+      email: user[0].email
     };
 
     const passwordMatched = await bcrypt.compare(
@@ -180,11 +180,11 @@ export const getUser = async (username: string) => {
     }
 
     const userObj: userInterface.UserDetails = {
-      userId: user.id,
-      username: user.username,
-      password: user.password,
-      email: user.email,
-      walletAddress: user.wallet_address
+      userId: user[0].id,
+      username: user[0].username,
+      password: user[0].password,
+      email: user[0].email,
+      walletAddress: user[0].wallet_address
     };
 
     console.log(
