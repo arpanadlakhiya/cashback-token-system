@@ -4,4 +4,5 @@ export interface Wallet {
   address: string;
   creationTime: string;
   status: string;
+  username: string;
 }

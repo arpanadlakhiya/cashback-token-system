@@ -1,14 +1,13 @@
 import express, { Request, Response } from "express";
 import * as ruleController from "../controller/ruleset.controller";
-
+import * as rulesetInterface from "../../interfaces/ruleset.interface";
 
 export const rulesetRouter = express.Router();
-
 
 rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
   (async () => {
     console.log(
-      `Request received for register :: Body: ${JSON.stringify(req.body)}`
+      `RulesetRouter : create-ruleset :: Request received for register: ${JSON.stringify(req.body)}`
     );
   
     if (req.body.length === 0) {
@@ -18,8 +17,8 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
     }
   
     try {
-      const ruleset = {
-      //    docType
+      const ruleset: rulesetInterface.RuleSet = {
+        docType: req.body.docType,
         ruleId : req.body.ruleId,
         status: req.body.status,
         min_txn_limit : req.body.min_txn_limit,
@@ -29,16 +28,15 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
         expiration_time: req.body.expiration_time,
         cashback_expiration_time:   req.body.cashback_expiration_time
       }
-
   
-      const isRuleSet = await ruleController.setRule(ruleset);
+      const isRuleSet = await ruleController.createRuleset(ruleset);
   
       res.status(isRuleSet.statusCode).json(isRuleSet.httpResponseMessage);
     } catch (err) {
-      console.error(`Route register: error occurred during register: ${err.message}`);
+      console.error(`RulesetRouter : create-ruleset :: error occurred while creating ruleset: ${err.message}`);
   
       res.status(500).json({
-        message: "Error occurred while registering user!",
+        message: "Error occurred while creating ruleset",
       });
     }
   })();

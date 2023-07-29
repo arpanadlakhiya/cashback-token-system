@@ -8,7 +8,7 @@ export const userRouter = express.Router();
 userRouter.post("/register", (req: Request, res: Response) => {
   (async () => {
     console.log(
-      `Request received for register :: Body: ${JSON.stringify(req.body)}`
+      `UserRouter : register :: Request received for register: ${JSON.stringify(req.body)}`
     );
   
     if (req.body.length === 0) {
@@ -31,7 +31,7 @@ userRouter.post("/register", (req: Request, res: Response) => {
   
       res.status(isRegistered.statusCode).json(isRegistered.httpResponseMessage);
     } catch (err) {
-      console.error(`Route register: error occurred during register: ${err.message}`);
+      console.log(`UserRouter : register :: error occurred during register: ${err.message}`);
   
       res.status(500).json({
         message: "Error occurred while registering user!",
@@ -43,7 +43,7 @@ userRouter.post("/register", (req: Request, res: Response) => {
 userRouter.post("/login", (req: Request, res: Response) => {
   (async () => {
     console.log(
-      `Request received for login :: Body: ${JSON.stringify(req.body)}`
+      `UserRouter : login :: Request received for login: ${JSON.stringify(req.body)}`
     );
   
     if (req.body.length === 0) {
@@ -62,7 +62,7 @@ userRouter.post("/login", (req: Request, res: Response) => {
   
       res.status(loginResponse.statusCode).json(loginResponse.httpResponseMessage);
     } catch (err) {
-      console.error(`Route login: error occurred during login: ${err.message}`);
+      console.error(`UserRouter : login :: error occurred during login: ${err.message}`);
   
       res.status(500).json({
         message: "Error occurred during login!",
