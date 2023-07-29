@@ -230,10 +230,11 @@ func (cc *CashbackContract) QueryCashbackToken(
 
 func (cc *CashbackContract) QueryAllCashbackTokens(
 	ctx contractapi.TransactionContextInterface,
+	userWallet string,
 ) ([]string, error) {
 	fmt.Printf("CashbackContract.QueryAllCashbackTokens :: Querying all cashback tokens")
 
-	queryString := fmt.Sprintf(`{"selector":{"docType":"%s"}}`, utils.DOCTYPE_CASHBACK)
+	queryString := fmt.Sprintf(`{"selector":{"docType":"%s","userWallet":"%s"}}`, utils.DOCTYPE_CASHBACK, userWallet)
 
 	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
 	if err != nil {

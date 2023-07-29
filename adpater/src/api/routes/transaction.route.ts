@@ -7,11 +7,11 @@ import * as constants from "../../utils/constants";
 export const transactionRouter = express.Router();
 
 transactionRouter.post(
-  "/simulate-transaction",
+  "/get-pre-txn-details",
   (req: Request, res: Response) => {
     (async () => {
       console.log(
-        `TransactionRouter : simulate-transaction :: Request received to simulate transaction ${JSON.stringify(
+        `TransactionRouter : get-cashback-offers :: Fetching available cashback and offers: ${JSON.stringify(
           req.body
         )}`
       );
@@ -23,14 +23,8 @@ transactionRouter.post(
       }
 
       try {
-        const transaction: transactionInterface.Transaction = {
-          txnId: req.body.txnId,
-          docType: req.body.docType,
-          value: req.body.value,
-          timeStamp: req.body.timeStamp,
-          senderAddress: req.body.senderAddress,
-          receiverAddress: req.body.receiverAddress,
-          cashbackUsedValue: req.body.cashbackUsedValue,
+        const preTxnDetails: transactionInterface.PreTransaction = {
+          value: req.body.value
         };
 
         const simulateTxnRes = await transactionController.simulateTransaction(
