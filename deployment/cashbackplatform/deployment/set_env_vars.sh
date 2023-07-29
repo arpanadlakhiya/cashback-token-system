@@ -1,4 +1,5 @@
-LOCAL_IP=$(hostname -i | awk '{print $1}')
+# LOCAL_IP=$(hostname -i | awk '{print $1}')
+LOCAL_IP=$(ip a | grep 192.168 | awk '{ print $2 }' | head -n 1 | cut -d '/' -f 1)
 
 HLF_NW_IP=$LOCAL_IP
 

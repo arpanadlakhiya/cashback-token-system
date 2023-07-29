@@ -11,3 +11,4 @@
 **/*.tar.*
 **/package-lock.json
 **/vars/*
+**/*.id
