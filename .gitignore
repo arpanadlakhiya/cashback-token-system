@@ -5,11 +5,10 @@
 **/network-config/*
 **/userWallets/
 **/certs/*
-**/deployment/set_env_vars.sh
 **/*.pem
 **/*.cer
 **/*.crt
 **/*.tar
 **/*.tar.*
 **/package-lock.json
-hlf-network/*
+**/vars/*

@@ -5,7 +5,8 @@ import * as ruleController from "../controller/ruleset.controller";
 export const rulesetRouter = express.Router();
 
 
-rulesetRouter.post("/setRuleset", async (req: Request, res: Response) => {
+rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
+  (async () => {
     console.log(
       `Request received for setRuleset :: Body: ${JSON.stringify(req.body)}`
     );
@@ -17,9 +18,8 @@ rulesetRouter.post("/setRuleset", async (req: Request, res: Response) => {
     }
   
     try {
-    console.log(req.body);
-    const ruleset = {
-    //    docType
+      const ruleset = {
+      //    docType
         ruleId : req.body.ruleId,
         status: req.body.status,
         min_txn_limit : req.body.min_txn_limit,
@@ -28,7 +28,7 @@ rulesetRouter.post("/setRuleset", async (req: Request, res: Response) => {
         creation_time: req.body.creation_time,
         expiration_time: req.body.expiration_time,
         cashback_expiration_time:   req.body.cashback_expiration_time
-    }
+      }
 
   
       const isRuleSet = await ruleController.setRule(ruleset);
@@ -97,4 +97,5 @@ rulesetRouter.post("/setRuleset", async (req: Request, res: Response) => {
         message: "Error occurred while queryRuleset!",
       });
     }
-  });
+  })();
+});

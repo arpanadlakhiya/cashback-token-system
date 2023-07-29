@@ -71,6 +71,13 @@ func GenerateCashback(
 		return nil, errStr
 	}
 
+	err = utils.SetEvent(ctx, utils.CASHBACK_GENERATED_EVENT, cashbackToken.ID)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return nil, errStr
+	}
+
 	fmt.Printf("CashbackContract.GenerateCashback :: Cashback generated for transaction %s",
 		transaction.TxnId)
 
@@ -103,6 +110,13 @@ func (cc *CashbackContract) ExpireCashback(
 	err = utils.PutState(ctx, cashbackToken.ID, cashbackToken)
 	if err != nil {
 		errStr := fmt.Errorf("error while putting state, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
+	err = utils.SetEvent(ctx, utils.CASHBACK_EXPIRED_EVENT, cashbackToken.ID)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
 		fmt.Println(errStr)
 		return false, errStr
 	}
@@ -147,6 +161,13 @@ func ClaimCashback(
 	err = utils.PutState(ctx, cashbackToken.ID, cashbackToken)
 	if err != nil {
 		errStr := fmt.Errorf("error while putting state, %v", err.Error())
+		fmt.Println(errStr)
+		return nil, errStr
+	}
+
+	err = utils.SetEvent(ctx, utils.CASHBACK_CLAIMED_EVENT, cashbackToken.ID)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
 		fmt.Println(errStr)
 		return nil, errStr
 	}
