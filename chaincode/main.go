@@ -9,9 +9,12 @@ import (
 )
 
 func main() {
-	cashbackGenerator := new(smartcontracts.CashbackContract)
+	cashbackContract := new(smartcontracts.CashbackContract)
+	rulesetContract := new(smartcontracts.RulesetContract)
+	transactionContract := new(smartcontracts.TransactionSimulator)
+	userWalletContract := new(smartcontracts.UserWallet)
 
-	chaincode, err := contractapi.NewChaincode(cashbackGenerator)
+	chaincode, err := contractapi.NewChaincode(cashbackContract, rulesetContract, transactionContract, userWalletContract)
 
 	if err != nil {
 		log.Printf("Error creating chaincode: %s", err.Error())
@@ -19,5 +22,7 @@ func main() {
 
 	if err := chaincode.Start(); err != nil {
 		log.Printf("Error starting chaincode: %s", err.Error())
+	} else {
+		log.Printf("Started chaincode: %s", err.Error())
 	}
 }
