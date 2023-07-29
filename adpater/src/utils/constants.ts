@@ -41,8 +41,13 @@ export const STATUS_EXPIRED = "EXPIRED";
 
 // Chaincode functions
 export const REGISTER_WALLET = "UserWallet:Register";
+
 export const CREATE_RULESET = "RulesetContract:CreateRuleset";
+export const QUERY_RULESETS = "RulesetContract:QueryAllRulesets";
+
 export const SIMULATE_TRANSACTION = "TransactionSimulator:SimulateTransaction";
+export const QUERY_TRANSACTIONS = "TransactionSimulator:QueryAllTransactions";
+
 export const QUERY_CASHBACK_TOKENS = "CashbackContract:QueryAllCashbackTokens";
 
 // Events

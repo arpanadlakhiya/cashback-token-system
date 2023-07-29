@@ -21,10 +21,7 @@ userRouter.post("/register", (req: Request, res: Response) => {
       const registrationRequest: userInterface.User = {
         username: req.body.username,
         password: req.body.password,
-        email: req.body.email,
-        // address: req.body.address,
-        // role: req.body.role,
-        // org: req.body.org,
+        email: req.body.email
       };
   
       const isRegistered = await userController.register(registrationRequest);
@@ -72,3 +69,23 @@ userRouter.post("/login", (req: Request, res: Response) => {
 });
 
 userRouter.use(auth.verifyToken);
+
+userRouter.get("/get-users", (req: Request, res: Response) => {
+  (async () => {
+    console.log(
+      `UserRouter : get-users :: Request received for fetching all users`
+    );
+  
+    try {  
+      const usersListRes = await userController.getUsers(req.body.user);
+  
+      res.status(usersListRes.statusCode).json(usersListRes.httpResponseMessage);
+    } catch (err) {
+      console.error(`UserRouter : get-users :: error occurred while fetching all users: ${err.message}`);
+  
+      res.status(500).json({
+        message: "Error occurred while fetching all users",
+      });
+    }
+  })();
+});

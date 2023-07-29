@@ -11,7 +11,7 @@ transactionRouter.post(
   (req: Request, res: Response) => {
     (async () => {
       console.log(
-        `TransactionRouter : get-cashback-offers :: Fetching available cashback and offers: ${JSON.stringify(
+        `TransactionRouter : get-pre-txn-details :: Fetching available cashback and offers: ${JSON.stringify(
           req.body
         )}`
       );
@@ -24,25 +24,23 @@ transactionRouter.post(
 
       try {
         const preTxnDetails: transactionInterface.PreTransaction = {
-          value: req.body.value
+          value: req.body.value,
         };
 
-        const simulateTxnRes = await transactionController.simulateTransaction(
-          transaction,
-          req.body.user,
-          req.body.rulesetId,
-          req.body.cashbackTokenId
+        const preTxnDetailsRes = await transactionController.preTxnDetails(
+          preTxnDetails,
+          req.body.user
         );
 
         return res
-          .status(simulateTxnRes.statusCode)
-          .json(simulateTxnRes.httpResponseMessage);
+          .status(preTxnDetailsRes.statusCode)
+          .json(preTxnDetailsRes.httpResponseMessage);
       } catch (err) {
         console.log(
-          `TransactionRouter : get-cashback-offers :: Failed to simulate transaction :: ${err}`
+          `TransactionRouter : get-pre-txn-details :: Failed to fetch available cashback and offers :: ${err}`
         );
         return res.status(500).json({
-          message: "Error occurred while simulating transaction",
+          message: "Error occurred while fetching pre-transaction details",
         });
       }
     })();
@@ -70,9 +68,11 @@ transactionRouter.post(
           txnId: "",
           docType: "",
           value: req.body.value,
-          timeStamp: req.body.timeStamp,
+          timeStamp: "",
+          sender: req.body.sender,
           senderAddress: req.body.senderAddress,
-          receiverAddress: req.body.receiverAddress,
+          receiver: req.body.receiver,
+          receiverAddress: "",
           cashbackUsedValue: req.body.cashbackUsedValue,
         };
 
@@ -97,3 +97,30 @@ transactionRouter.post(
     })();
   }
 );
+
+transactionRouter.get("/get-transactions", (req: Request, res: Response) => {
+  (async () => {
+    console.log(
+      `TransactionRouter : get-transactions :: Fetching all transactions: ${JSON.stringify(
+        req.body
+      )}`
+    );
+
+    try {
+      const getTransactionsRes = await transactionController.getTransactions(
+        req.body.user
+      );
+
+      return res
+        .status(getTransactionsRes.statusCode)
+        .json(getTransactionsRes.httpResponseMessage);
+    } catch (err) {
+      console.log(
+        `TransactionRouter : get-transactions :: Failed to fetch all transactions :: ${err}`
+      );
+      return res.status(500).json({
+        message: "Error occurred while fetching pre-transaction details",
+      });
+    }
+  })();
+});

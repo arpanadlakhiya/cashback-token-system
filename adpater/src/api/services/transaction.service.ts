@@ -3,8 +3,9 @@ import * as HTTPResponseUtils from "../../utils/httpResponseUtils";
 import * as hlf from "../../utils/hlfClient/hlfClient";
 import * as constants from "../../utils/constants";
 import * as userInterface from "../../interfaces/user.interface";
-import * as cashbackInterface from "../../interfaces/cashback.interface";
 import { getUser } from "./user.service";
+import { fetchAvailableCashback } from "./cashback.service";
+import { fetchAvailableRulesets } from "./ruleset.service";
 
 export const preTxnDetails = async (
   transaction: transactionInterface.PreTransaction,
@@ -19,38 +20,44 @@ export const preTxnDetails = async (
     const userDetails = await getUser(user.username);
 
     if (!userDetails) {
-      throw new Error(`unable to fetch user details for ${user.username}`)
+      throw new Error(`unable to fetch user details for ${user.username}`);
     }
 
-    console.log(
-      `TransactionService : preTxnDetails :: Fetching available cashback tokens of user ${user.username}`
+    const availableCashback = await fetchAvailableCashback(
+      userDetails,
+      transaction.value
     );
 
-    // Fetch available cashback for user
-    const availableCashbackTokens = await hlf.invoke(
-      constants.contractName,
-      constants.QUERY_CASHBACK_TOKENS,
-      [userDetails.walletAddress]
-    );
-
-    if (!availableCashbackTokens) {
-      throw new Error(`error while fetching available cashback for user ${user.username}`)
+    if (availableCashback.amount < 0) {
+      throw new Error(
+        `unable to fetch available cashback for ${user.username}`
+      );
     }
-
-    let availableCashbackAmount = 0;
-    for (const tokenStr of availableCashbackTokens) {
-      const token: cashbackInterface.CashbackDetails = JSON.parse(tokenStr.toString());
-      if (token.value > availableCashbackAmount) {
-        availableCashbackAmount = token.value
-      }
-    }
-
-    console.log(
-      `TransactionService : preTxnDetails :: Available cashback for user ${user.username} is ${availableCashbackAmount}`
-    );
-
 
     // Fetch available offers for user
+    const applicableOffers = await fetchAvailableRulesets(
+      userDetails,
+      transaction.value
+    );
+
+    if (applicableOffers === null) {
+      throw new Error(`unable to fetch applicable offers for ${user.username}`);
+    }
+
+    console.log(
+      `TransactionService : getTransactions :: Fetched available cashback amount and applicable offers for user ${user.username}`
+    );
+
+    return HTTPResponseUtils.okResponse(
+      {
+        originalAmount: transaction.value,
+        cashbackAmount: availableCashback.amount,
+        cashbackTokenId: availableCashback.id,
+        applicableOffers: applicableOffers,
+      },
+      `Fetched pre-transaction details for ${user.username}`,
+      true
+    );
   } catch (err) {
     console.log(
       `TransactionService : preTxnDetails :: Failed to fetch pre-transaction details: ${err}`
@@ -72,6 +79,21 @@ export const simulateTransaction = async (
   );
 
   try {
+    console.log(
+      `TransactionService : simulateTransaction :: Fetching receiver wallet addres for user ${transaction.receiver}`
+    );
+
+    // Fetch user wallet
+    const receiverDetails = await getUser(transaction.receiver);
+
+    if (!receiverDetails) {
+      throw new Error(`unable to fetch receiver wallet address for user ${transaction.receiver}`);
+    }
+
+    transaction.docType = constants.DOCTYPE_TXN;
+    transaction.receiverAddress = receiverDetails.walletAddress;
+    transaction.timeStamp = new Date().toISOString();
+
     await hlf.invoke(
       constants.contractName,
       constants.SIMULATE_TRANSACTION,
@@ -97,6 +119,54 @@ export const simulateTransaction = async (
 
     return HTTPResponseUtils.internalServerErrorResponse(
       "Failed to simulate transaction"
+    );
+  }
+};
+
+export const getTransactions = async (user: userInterface.User) => {
+  console.log(
+    `TransactionService : getTransactions :: Fetching all transactions for user ${user.username}`
+  );
+
+  try {
+    // Fetch user wallet
+    const userDetails = await getUser(user.username);
+
+    if (!userDetails) {
+      throw new Error(`unable to fetch user details for ${user.username}`);
+    }
+
+    // Fetch all transactions of user
+    const transactionsBuffer = await hlf.invoke(
+      constants.contractName,
+      constants.QUERY_TRANSACTIONS,
+      [userDetails.walletAddress]
+    );
+
+    const transactionsStr = JSON.parse(transactionsBuffer.toString());
+
+    let transactions: transactionInterface.Transaction[];
+    for (const transactionStr of transactionsStr) {
+      const transaction = JSON.parse(transactionStr);
+      transactions.push(transaction);
+    }
+
+    console.log(
+      `TransactionService : getTransactions :: Fetched all transactions for user ${user.username}`
+    );
+
+    return HTTPResponseUtils.okResponse(
+      transactions,
+      `Fetched transactions for user ${user.username}`,
+      true
+    );
+  } catch (err) {
+    console.log(
+      `TransactionService : getTransactions :: Failed to fetch all transactions for user: ${err}`
+    );
+
+    return HTTPResponseUtils.internalServerErrorResponse(
+      `Failed to fetch all transactions for ${user.username}`
     );
   }
 };

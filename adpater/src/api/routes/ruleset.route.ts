@@ -29,6 +29,7 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
         creation_time: req.body.creation_time,
         expiration_time: req.body.expiration_time,
         cashback_expiration_time: req.body.cashback_expiration_time,
+        user_wallet: req.body.user_wallet
       };
 
       const response = await ruleController.createRuleset(

@@ -120,10 +120,11 @@ func (ts *TransactionSimulator) SimulateTransaction(
 
 func (ts *TransactionSimulator) QueryAllTransactions(
 	ctx contractapi.TransactionContextInterface,
+	userWallet string,
 ) ([]string, error) {
 	fmt.Printf("TransactionSimulator.QueryAllTransactions :: Querying all transactions")
 
-	queryString := fmt.Sprintf(`{"selector":{"docType":"%s"}}`, utils.DOCTYPE_TXN)
+	queryString := fmt.Sprintf(`{"selector":{"docType":"%s","senderAddress":"%s"}}`, utils.DOCTYPE_TXN, userWallet)
 
 	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
 	if err != nil {

@@ -8,4 +8,5 @@ export interface RuleSet {
   creation_time: Date;
   expiration_time: Date;
   cashback_expiration_time: Date;
+  user_wallet: string;
 }

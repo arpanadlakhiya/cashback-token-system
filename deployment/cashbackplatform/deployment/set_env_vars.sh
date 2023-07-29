@@ -6,13 +6,13 @@ HLF_NW_IP=$LOCAL_IP
 ORG_NAME=cashbackplatform
 
 # port where CA for this org runs
-CA_PORT=7001
+CA_PORT=7000
 
 # port where peer for this org runs
-PEER_PORT=7005
+PEER_PORT=7001
 
 # port where orderer is running
-ORDERER_PORT=7015
+ORDERER_PORT=7003
 
 #Port where orgs API listens
 API_PORT=7016
@@ -32,7 +32,7 @@ CLIENT_USER_ID=user9
 USER_WALLET_PATH=./wallet/user/
 
 DLT_CHANNEL_NAME=mychannel
-FABRIC_CONTRACT_NAME=coffee-supply-chain
+FABRIC_CONTRACT_NAME=cashback-token-system
 
 MSP_ID=$ORG_NAME              
 ORG_NAME=$ORG_NAME
