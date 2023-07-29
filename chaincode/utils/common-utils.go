@@ -77,6 +77,19 @@ func PutState(ctx contractapi.TransactionContextInterface, key string, v interfa
 	return nil
 }
 
+// Verify state does not exists on the ledger. Returns error if the state exists
+func VerifyStateDoesNotExist(ctx contractapi.TransactionContextInterface, key string) error {
+	state, err := ctx.GetStub().GetState(key)
+	if err != nil {
+		return fmt.Errorf("error while getting record from world state. Id:%s ,Error:%w", key, err)
+	}
+	if state != nil {
+		return fmt.Errorf("state already exists for key: %s", key)
+	}
+
+	return nil
+}
+
 func ConstructResponseFromIterator(resultsIterator shim.StateQueryIteratorInterface) ([]string, error) {
 	var data = make([]string, 0)
 	for resultsIterator.HasNext() {

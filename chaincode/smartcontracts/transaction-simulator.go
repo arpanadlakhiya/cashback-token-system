@@ -85,6 +85,13 @@ func (ts *TransactionSimulator) SimulateTransaction(
 		return false, errStr
 	}
 
+	err = utils.SetEvent(ctx, utils.TXN_TRANSIENT, transaction.TxnId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
 	// Check if cashback can be generated
 	if rulesetId != "" {
 		fmt.Printf("TransactionSimulator.SimulateTransaction :: Generating cashback on ruleset ID %s",
@@ -92,7 +99,7 @@ func (ts *TransactionSimulator) SimulateTransaction(
 
 		generatedCashback, err := GenerateCashback(
 			ctx,
-			transaction.TxnId,
+			transaction,
 			rulesetId,
 			transaction.SenderAddress,
 		)
@@ -102,7 +109,7 @@ func (ts *TransactionSimulator) SimulateTransaction(
 			return false, errStr
 		}
 
-		fmt.Printf("TransactionSimulator.SimulateTransaction :: Generated cashback on ruleset ID %s, cashback ID",
+		fmt.Printf("TransactionSimulator.SimulateTransaction :: Generated cashback on ruleset ID: %s, cashback ID: %s",
 			rulesetId, generatedCashback.ID)
 	}
 
@@ -113,10 +120,11 @@ func (ts *TransactionSimulator) SimulateTransaction(
 
 func (ts *TransactionSimulator) QueryAllTransactions(
 	ctx contractapi.TransactionContextInterface,
+	userWallet string,
 ) ([]string, error) {
 	fmt.Printf("TransactionSimulator.QueryAllTransactions :: Querying all transactions")
 
-	queryString := fmt.Sprintf(`{"selector":{"docType":"%s"}}`, utils.DOCTYPE_TXN)
+	queryString := fmt.Sprintf(`{"selector":{"docType":"%s","senderAddress":"%s"}}`, utils.DOCTYPE_TXN, userWallet)
 
 	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
 	if err != nil {

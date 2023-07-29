@@ -10,4 +10,5 @@ type Ruleset struct {
 	CreationTime           string  `json:"creation_time"`
 	ExpirationTime         string  `json:"expiration_time"`
 	CashbackExpirationTime int64   `json:"cashback_expiration_time"`
+	UserWallet             string  `json:"user_wallet"`
 }

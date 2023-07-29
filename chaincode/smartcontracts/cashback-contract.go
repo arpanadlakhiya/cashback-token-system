@@ -18,29 +18,12 @@ type CashbackContract struct {
 
 func GenerateCashback(
 	ctx contractapi.TransactionContextInterface,
-	transactionId string,
+	transaction models.Transaction,
 	rulesetId string,
 	userWallet string,
 ) (*models.CashbackToken, error) {
-	fmt.Printf("CashbackContract.GenerateCashback :: Cashback generation started for transaction %s\n",
-		transactionId)
-
-	// Get transaction details from transient
-	txnTransient, err := utils.GetTransientData(ctx, utils.TXN_TRANSIENT)
-	if err != nil {
-		errStr := fmt.Errorf("error while getting transient data: %v", err.Error())
-		fmt.Println(errStr)
-		return nil, errStr
-	}
-
-	// Unmarshall transaction details to model
-	var transaction models.Transaction
-	err = json.Unmarshal(txnTransient, &transaction)
-	if err != nil {
-		errStr := fmt.Errorf("error while unmarshalling data: %s", err.Error())
-		fmt.Println(errStr)
-		return nil, errStr
-	}
+	fmt.Printf("CashbackContract.GenerateCashback :: Cashback generation started for transaction %s",
+		transaction.TxnId)
 
 	// Fetch ruleset details to be applied on the transaction
 	ruleset, err := FetchRuleset(ctx, rulesetId)
@@ -62,7 +45,7 @@ func GenerateCashback(
 	cashbackToken := CreateCashbackToken(
 		ctx,
 		cashback,
-		transactionId,
+		transaction.TxnId,
 		userWallet,
 		ruleset.CashbackExpirationTime,
 		rulesetId,
@@ -88,8 +71,15 @@ func GenerateCashback(
 		return nil, errStr
 	}
 
-	fmt.Printf("CashbackContract.GenerateCashback :: Cashback generated for transaction %s\n",
-		transactionId)
+	err = utils.SetEvent(ctx, utils.CASHBACK_GENERATED_EVENT, cashbackToken.ID)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return nil, errStr
+	}
+
+	fmt.Printf("CashbackContract.GenerateCashback :: Cashback generated for transaction %s",
+		transaction.TxnId)
 
 	return cashbackToken, nil
 }
@@ -124,6 +114,13 @@ func (cc *CashbackContract) ExpireCashback(
 		return false, errStr
 	}
 
+	err = utils.SetEvent(ctx, utils.CASHBACK_EXPIRED_EVENT, cashbackToken.ID)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
 	fmt.Printf("RulesetContract.ExpireRuleset :: Expired cashback on ID %s", cashbackTokenId)
 
 	return true, nil
@@ -135,7 +132,7 @@ func ClaimCashback(
 	cashbackId string,
 	userWallet string,
 ) (*models.CashbackToken, error) {
-	fmt.Printf("CashbackContract.ClaimCashback :: Claiming cashback on transaction ID %s\n",
+	fmt.Printf("CashbackContract.ClaimCashback :: Claiming cashback on transaction ID %s",
 		transactionId)
 
 	// Fetch cashback token on ID
@@ -168,7 +165,14 @@ func ClaimCashback(
 		return nil, errStr
 	}
 
-	fmt.Printf("CashbackContract.ClaimCashback :: Claimed cashback on transaction ID %s\n",
+	err = utils.SetEvent(ctx, utils.CASHBACK_CLAIMED_EVENT, cashbackToken.ID)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return nil, errStr
+	}
+
+	fmt.Printf("CashbackContract.ClaimCashback :: Claimed cashback on transaction ID %s",
 		transactionId)
 
 	return cashbackToken, nil
@@ -201,7 +205,7 @@ func CreateCashbackToken(
 		ClaimedTxnID: "",
 	}
 
-	fmt.Printf("CashbackContract.CreateCashbackToken :: Created cashback token with id %s\n", cashbackToken.ID)
+	fmt.Printf("CashbackContract.CreateCashbackToken :: Created cashback token with id %s", cashbackToken.ID)
 
 	return &cashbackToken
 }
@@ -226,10 +230,11 @@ func (cc *CashbackContract) QueryCashbackToken(
 
 func (cc *CashbackContract) QueryAllCashbackTokens(
 	ctx contractapi.TransactionContextInterface,
+	userWallet string,
 ) ([]string, error) {
 	fmt.Printf("CashbackContract.QueryAllCashbackTokens :: Querying all cashback tokens")
 
-	queryString := fmt.Sprintf(`{"selector":{"docType":"%s"}}`, utils.DOCTYPE_CASHBACK)
+	queryString := fmt.Sprintf(`{"selector":{"docType":"%s","userWallet":"%s"}}`, utils.DOCTYPE_CASHBACK, userWallet)
 
 	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
 	if err != nil {
@@ -256,7 +261,7 @@ func FetchCashbackToken(
 	ctx contractapi.TransactionContextInterface,
 	cashbackTokenId string,
 ) (*models.CashbackToken, error) {
-	fmt.Printf("CashbackContract.FetchCashbackToken :: Fetching cashback token on ID %s\n", cashbackTokenId)
+	fmt.Printf("CashbackContract.FetchCashbackToken :: Fetching cashback token on ID %s", cashbackTokenId)
 
 	cashbackTokenStr, err := utils.GetState(ctx, cashbackTokenId)
 	if err != nil {
@@ -273,7 +278,7 @@ func FetchCashbackToken(
 		return nil, errStr
 	}
 
-	fmt.Printf("CashbackContract.FetchCashbackToken :: Fetched cashback token on ID %s\n", cashbackTokenId)
+	fmt.Printf("CashbackContract.FetchCashbackToken :: Fetched cashback token on ID %s", cashbackTokenId)
 
 	return &cashbackToken, nil
 }

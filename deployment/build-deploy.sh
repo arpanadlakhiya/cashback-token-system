@@ -1,17 +1,14 @@
 #! /bin/bash
 
-ADAPTER_PATH=${PWD}/../adapter
+ADAPTER_PATH=$(pwd | sed 's/\/deployment/\t/g' | awk '{ print $1 }')
 
-cd ${ADAPTER_PATH}
+cd ${ADAPTER_PATH}/adapter
 
-printf "\nCompiling code...\n"
-npm run build
+./build.sh
 
-printf "Compilation done! Building image...\n\n"
-DOCKER_BUILDKIT=1 docker build -f deployment/Dockerfile -t coffee-supply-chain .
-
-printf "\nImage built! Starting all components...\n\n"
 cd ../deployment
+
+./update_all_env.sh
 ./start_all_component.sh
 
 printf "\nDone!\n"

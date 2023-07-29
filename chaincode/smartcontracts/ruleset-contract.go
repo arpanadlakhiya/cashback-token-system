@@ -35,8 +35,6 @@ func (rc *RulesetContract) CreateRuleset(
 		return false, errStr
 	}
 
-	ruleset.Status = utils.STATUS_ACTIVE
-
 	// Store data in public state
 	err = utils.PutState(ctx, ruleset.RulesetId, ruleset)
 	if err != nil {
@@ -45,7 +43,14 @@ func (rc *RulesetContract) CreateRuleset(
 		return false, errStr
 	}
 
-	fmt.Printf("RulesetContract.CreateRuleset :: Created ruleset successfully with ID: %v\n", ruleset.RulesetId)
+	err = utils.SetEvent(ctx, utils.RULESET_CREATED_EVENT, ruleset.RulesetId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
+	fmt.Printf("RulesetContract.CreateRuleset :: Created ruleset successfully with ID: %v", ruleset.RulesetId)
 
 	return true, nil
 }
@@ -76,6 +81,13 @@ func (rc *RulesetContract) ExpireRuleset(
 	err = utils.PutState(ctx, ruleset.RulesetId, ruleset)
 	if err != nil {
 		errStr := fmt.Errorf("error while putting state, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
+	err = utils.SetEvent(ctx, utils.RULESET_EXPIRED_EVENT, ruleset.RulesetId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
 		fmt.Println(errStr)
 		return false, errStr
 	}
@@ -117,6 +129,13 @@ func ClaimRuleset(
 		return nil, errStr
 	}
 
+	err = utils.SetEvent(ctx, utils.RULESET_CLAIMED_EVENT, ruleset.RulesetId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return nil, errStr
+	}
+
 	fmt.Printf("RulesetContract.ClaimRuleset :: Claimed ruleset on ID %s", rulesetId)
 
 	return ruleset, nil
@@ -142,10 +161,11 @@ func (rc *RulesetContract) QueryRuleset(
 
 func (rc *RulesetContract) QueryAllRulesets(
 	ctx contractapi.TransactionContextInterface,
+	userWallet string,
 ) ([]string, error) {
 	fmt.Printf("RulesetContract.QueryAllRulesets :: Querying all rulesets")
 
-	queryString := fmt.Sprintf(`{"selector":{"docType":"%s"}}`, utils.DOCTYPE_RULESET)
+	queryString := fmt.Sprintf(`{"selector":{"docType":"%s","user_wallet":"%s"}}`, utils.DOCTYPE_RULESET, userWallet)
 
 	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
 	if err != nil {

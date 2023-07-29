@@ -1,5 +1,5 @@
 CWD=$(pwd | sed 's/\/deployment/\t/g' | awk '{ print $1 }')
-HLF_NETWORK_DIR=$CWD/hlf-network/vars/keyfiles
+HLF_NETWORK_DIR=$CWD/chaincode/deployment/vars/keyfiles
 ORG_NAME=cashbackplatform
 
 rm -rf certs/ca/*
