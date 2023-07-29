@@ -8,15 +8,19 @@ export const simulateTransaction = async (
   rulesetId: string,
   cashbackTokenId: string
 ) => {
-    console.log(`TransactionController : simulateTransaction :: User ${user.username}`);
-  
-    const userRegister = await transactionService.simulateTransaction(
-      transaction,
-      rulesetId,
-      cashbackTokenId
-    );
-  
-    console.log(`TransactionController : simulateTransaction :: Ack ${user.username}`);
+  console.log(
+    `TransactionController : simulateTransaction :: User ${user.username}`
+  );
 
-    return userRegister;
-  };
+  const userRegister = await transactionService.simulateTransaction(
+    transaction,
+    rulesetId,
+    cashbackTokenId
+  );
+
+  console.log(
+    `TransactionController : simulateTransaction :: Ack ${user.username}`
+  );
+
+  return userRegister;
+};

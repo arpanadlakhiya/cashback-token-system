@@ -3,15 +3,10 @@ import { Client } from "cassandra-driver";
 
 const GET_USER = "SELECT * FROM user WHERE username = ? ALLOW FILTERING";
 
-const GET_USER_ROLES =
-  "SELECT user_id,role_id FROM user_role WHERE user_id = ? ALLOW FILTERING";
-
-const GET_ROLE = "SELECT * FROM role WHERE id = ?";
-
 const REGISTER_USER =
-  "INSERT INTO USER (id,username,email,password,address,role,status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  "INSERT INTO USER (id,username,email,password,wallet_address) VALUES (?, ?, ?, ?, ?)";
 
-const GET_ALL_USER = "SELECT * FROM USER";
+const GET_ALL_USER = "SELECT * FROM user";
 
 const GET_MAX_USER_ID = "SELECT MAX(id) as userId FROM USER";
 
@@ -22,16 +17,6 @@ export const getUser = async (dbClient: Client, username: string) => {
 
 export const getAllUsers = async (dbClient: Client, username: string) => {
   const result = await db.executeQuery(dbClient, GET_ALL_USER, []);
-  return result.rows;
-};
-
-export const getRole = async (dbClient: Client, roleId: string) => {
-  const result = await db.executeQuery(dbClient, GET_ROLE, [roleId]);
-  return result.rows[0];
-};
-
-export const getRoles = async (dbClient: Client, userId: string) => {
-  const result = await db.executeQuery(dbClient, GET_USER_ROLES, [userId]);
   return result.rows;
 };
 
@@ -56,8 +41,7 @@ export const registerUser = async (
       username,
       email,
       hashedPassword,
-      // address,
-      // role,
+      walletAddress
     ]);
 
     console.log(`User DB :: Inserted user details for ${username}`);

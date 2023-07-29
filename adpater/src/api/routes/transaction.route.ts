@@ -7,6 +7,49 @@ import * as constants from "../../utils/constants";
 export const transactionRouter = express.Router();
 
 transactionRouter.post(
+  "/get-pre-txn-details",
+  (req: Request, res: Response) => {
+    (async () => {
+      console.log(
+        `TransactionRouter : get-cashback-offers :: Fetching available cashback and offers: ${JSON.stringify(
+          req.body
+        )}`
+      );
+
+      if (req.body.length === 0) {
+        return res.status(400).json({
+          message: "Invalid request body",
+        });
+      }
+
+      try {
+        const preTxnDetails: transactionInterface.PreTransaction = {
+          value: req.body.value
+        };
+
+        const simulateTxnRes = await transactionController.simulateTransaction(
+          transaction,
+          req.body.user,
+          req.body.rulesetId,
+          req.body.cashbackTokenId
+        );
+
+        return res
+          .status(simulateTxnRes.statusCode)
+          .json(simulateTxnRes.httpResponseMessage);
+      } catch (err) {
+        console.log(
+          `TransactionRouter : get-cashback-offers :: Failed to simulate transaction :: ${err}`
+        );
+        return res.status(500).json({
+          message: "Error occurred while simulating transaction",
+        });
+      }
+    })();
+  }
+);
+
+transactionRouter.post(
   "/simulate-transaction",
   (req: Request, res: Response) => {
     (async () => {
@@ -24,8 +67,8 @@ transactionRouter.post(
 
       try {
         const transaction: transactionInterface.Transaction = {
-          txnId: req.body.txnId,
-          docType: req.body.docType,
+          txnId: "",
+          docType: "",
           value: req.body.value,
           timeStamp: req.body.timeStamp,
           senderAddress: req.body.senderAddress,

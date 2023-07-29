@@ -43,6 +43,7 @@ export const STATUS_EXPIRED = "EXPIRED";
 export const REGISTER_WALLET = "UserWallet:Register";
 export const CREATE_RULESET = "RulesetContract:CreateRuleset";
 export const SIMULATE_TRANSACTION = "TransactionSimulator:SimulateTransaction";
+export const QUERY_CASHBACK_TOKENS = "CashbackContract:QueryAllCashbackTokens";
 
 // Events
 export const WALLET_REGISTRATION_EVENT = "RegisterWallet";

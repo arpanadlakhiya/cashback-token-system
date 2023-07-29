@@ -13,6 +13,14 @@ export interface User {
   id?: string;
 }
 
+export interface UserDetails {
+  userId: string;
+  username: string;
+  password: string;
+  email: string;
+  walletAddress: string;
+}
+
 export interface UserResponse {
   username: string;
   // role: string;
