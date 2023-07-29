@@ -85,6 +85,13 @@ func (ts *TransactionSimulator) SimulateTransaction(
 		return false, errStr
 	}
 
+	err = utils.SetEvent(ctx, utils.TXN_TRANSIENT, transaction.TxnId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
 	// Check if cashback can be generated
 	if rulesetId != "" {
 		fmt.Printf("TransactionSimulator.SimulateTransaction :: Generating cashback on ruleset ID %s",

@@ -14,4 +14,14 @@ const (
 	STATUS_EXPIRED = "EXPIRED"
 
 	WALLET_REGISTRATION_EVENT = "RegisterWallet"
+
+	CASHBACK_GENERATED_EVENT = "CashbackGenerated"
+	CASHBACK_EXPIRED_EVENT   = "CashbackExpired"
+	CASHBACK_CLAIMED_EVENT   = "CashbackClaimed"
+
+	RULESET_CREATED_EVENT = "RulesetCreated"
+	RULESET_EXPIRED_EVENT = "RulesetExpired"
+	RULESET_CLAIMED_EVENT = "RulesetClaimed"
+
+	TXN_SIMULATED_EVENT = "TransactionSimulated"
 )

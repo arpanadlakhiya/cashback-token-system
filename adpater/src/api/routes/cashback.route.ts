@@ -7,12 +7,12 @@ import * as batchInterface from "../../interfaces/batch.interface";
 
 export const cashbackRouter = express.Router();
 
-cashbackRouter.post("/generate-cashback", async (req: Request, res: Response, next) => {
+cashbackRouter.post("/generate-cashback", (req: Request, res: Response, next) => {
 
 })
-cashbackRouter.get("/cashback-value", async (req: Request, res: Response, next) => {
+cashbackRouter.get("/cashback-value", (req: Request, res: Response, next) => {
 
 })
-cashbackRouter.post("/generate-cashback", async (req: Request, res: Response, next) => {
+cashbackRouter.post("/generate-cashback", (req: Request, res: Response, next) => {
 
 })

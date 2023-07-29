@@ -45,6 +45,13 @@ func (rc *RulesetContract) CreateRuleset(
 		return false, errStr
 	}
 
+	err = utils.SetEvent(ctx, utils.RULESET_CREATED_EVENT, ruleset.RulesetId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
 	fmt.Printf("RulesetContract.CreateRuleset :: Created ruleset successfully with ID: %v", ruleset.RulesetId)
 
 	return true, nil
@@ -76,6 +83,13 @@ func (rc *RulesetContract) ExpireRuleset(
 	err = utils.PutState(ctx, ruleset.RulesetId, ruleset)
 	if err != nil {
 		errStr := fmt.Errorf("error while putting state, %v", err.Error())
+		fmt.Println(errStr)
+		return false, errStr
+	}
+
+	err = utils.SetEvent(ctx, utils.RULESET_EXPIRED_EVENT, ruleset.RulesetId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
 		fmt.Println(errStr)
 		return false, errStr
 	}
@@ -113,6 +127,13 @@ func ClaimRuleset(
 	err = utils.PutState(ctx, ruleset.RulesetId, ruleset)
 	if err != nil {
 		errStr := fmt.Errorf("error while putting state, %v", err.Error())
+		fmt.Println(errStr)
+		return nil, errStr
+	}
+
+	err = utils.SetEvent(ctx, utils.RULESET_CLAIMED_EVENT, ruleset.RulesetId)
+	if err != nil {
+		errStr := fmt.Errorf("error while setting event, %v", err.Error())
 		fmt.Println(errStr)
 		return nil, errStr
 	}
