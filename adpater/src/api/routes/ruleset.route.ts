@@ -7,7 +7,7 @@ export const rulesetRouter = express.Router();
 
 rulesetRouter.post("/setRuleset", async (req: Request, res: Response) => {
     console.log(
-      `Request received for register :: Body: ${JSON.stringify(req.body)}`
+      `Request received for setRuleset :: Body: ${JSON.stringify(req.body)}`
     );
   
     if (req.body.length === 0) {
@@ -35,10 +35,66 @@ rulesetRouter.post("/setRuleset", async (req: Request, res: Response) => {
   
       res.status(isRuleSet.statusCode).json(isRuleSet.httpResponseMessage);
     } catch (err) {
-      console.error(`Route register: error occurred during register: ${err.message}`);
+      console.error(`Route setRuleset: error occurred during setRuleset: ${err.message}`);
   
       res.status(500).json({
-        message: "Error occurred while registering user!",
+        message: "Error occurred while setRuleset!",
+      });
+    }
+  });
+
+
+  rulesetRouter.post("/claimRuleset", async (req: Request, res: Response) => {
+    console.log(
+      `Request received for claimRuleset :: Body: ${JSON.stringify(req.body)}`
+    );
+  
+    if (req.body.length === 0) {
+      return res.status(400).json({
+        message: "Invalid request body",
+      });
+    }
+  
+    try {
+    console.log(req.body);
+    const claimruleset = {
+        transactionId: req.body.transactionId,
+        rulesetId: req.body.rulesetId,
+    }
+
+  
+      const isRuleSetClamed = await ruleController.claimRuleset(claimruleset);
+  
+      res.status(isRuleSetClamed.statusCode).json(isRuleSetClamed.httpResponseMessage);
+    } catch (err) {
+      console.error(`Route register: error occurred during claimRuleset: ${err.message}`);
+  
+      res.status(500).json({
+        message: "Error occurred while claimRuleset!",
+      });
+    }
+  });
+
+
+  rulesetRouter.get("/queryRuleset", async (req: Request, res: Response) => {
+    console.log(
+      `Request received for queryRuleset :: Body: ${JSON.stringify(req.body)}`
+    );
+  
+
+    try {
+    console.log(req.query);
+    const queryId = req.query.queryId
+
+  
+      const isRuleSetClamed = await ruleController.queryRuleset(queryId);
+  
+      res.status(isRuleSetClamed.statusCode).json(isRuleSetClamed.httpResponseMessage);
+    } catch (err) {
+      console.error(`Route register: error occurred during queryRuleset: ${err.message}`);
+  
+      res.status(500).json({
+        message: "Error occurred while queryRuleset!",
       });
     }
   });

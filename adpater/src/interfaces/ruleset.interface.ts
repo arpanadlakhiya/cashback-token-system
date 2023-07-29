@@ -9,4 +9,7 @@ export interface ruleSet {
         expiration_time: Date,
         cashback_expiration_time:   Date
   }
-  
+  export interface claimRuleset {
+    transactionId: string,
+    rulesetId: string,
+  }

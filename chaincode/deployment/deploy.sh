@@ -7,4 +7,4 @@ cp -R ../* ../../hlf-network/vars/chaincode/cashback-token-system/go
 
 cd ../../hlf-network/
 
-./minifab up -o cashbackplatform -n cashback-token-system -i 2.3 -d false -l go -v 1.0 -r true -s couchdb -e 7000
+./minifab up -o cashbackplatform -n cashback-token-system -i 2.4 -d false -l go -v 1.0 -r true -s couchdb -e 7000
