@@ -92,7 +92,7 @@ func (ts *TransactionSimulator) SimulateTransaction(
 
 		generatedCashback, err := GenerateCashback(
 			ctx,
-			transaction.TxnId,
+			transaction,
 			rulesetId,
 			transaction.SenderAddress,
 		)
@@ -102,7 +102,7 @@ func (ts *TransactionSimulator) SimulateTransaction(
 			return false, errStr
 		}
 
-		fmt.Printf("TransactionSimulator.SimulateTransaction :: Generated cashback on ruleset ID %s, cashback ID",
+		fmt.Printf("TransactionSimulator.SimulateTransaction :: Generated cashback on ruleset ID: %s, cashback ID: %s",
 			rulesetId, generatedCashback.ID)
 	}
 

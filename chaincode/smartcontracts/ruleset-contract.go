@@ -45,7 +45,7 @@ func (rc *RulesetContract) CreateRuleset(
 		return false, errStr
 	}
 
-	fmt.Printf("RulesetContract.CreateRuleset :: Created ruleset successfully with ID: %v\n", ruleset.RulesetId)
+	fmt.Printf("RulesetContract.CreateRuleset :: Created ruleset successfully with ID: %v", ruleset.RulesetId)
 
 	return true, nil
 }
