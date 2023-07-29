@@ -1,0 +1,195 @@
+<div class="profile" style="padding:80px ;">
+<div class="card" >
+  <div class="content-card p-5 pt-4">
+    <div class="heading mb-3">Account</div>
+    <div>
+      <!-- <div class="profile-picture"></div> -->
+      <div class="form">
+        <form class="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="d-flex flex-lg-row flex-md-column gap-3">
+          
+            <div class="gender form-group w-100">
+              <label class="mb-2" for="user">Select Payee</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="bi bi-person-circle"></i>
+                  </span>
+                </div>
+                <select
+                  id="user"
+                  class="form-control"
+                  formControlName="user"
+                  required
+                >
+                  <option *ngFor="let user of userData" [value]="user">
+                    {{ user }}
+                  </option>
+                </select>
+              </div>
+              <div
+                *ngIf="
+                  userForm.get('user')?.invalid && userForm.get('user')?.touched
+                "
+                class="text-danger"
+              >
+                Atleast one user is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- address -->
+
+                    <!--amount-->
+
+                    <div class="address form-group w-100">
+                        <label class="mb-2" for="amount">Amount</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="bi bi-currency-rupee"></i>
+                            </span>
+                          </div>
+                          <input
+                            type="text"
+                            id="amount"
+                            class="form-control"
+                            formControlName="amount"
+                            required
+                          />
+                        </div>
+                        <div
+                          *ngIf="
+                            userForm.get('amount')?.invalid &&
+                            userForm.get('amount')?.touched
+                          "
+                          class="text-danger"
+                        >
+                          Amount is required.
+                        </div>
+                      </div>
+
+   <button class="btn btn-info mt-3  btn-block"
+                (click)= "getTokens()"> Check Offers </button>
+
+          <!-- token -->
+          <div *ngIf="ifOffers" class="address form-group w-100">
+            <label class="mb-2" for="Token">Cashback Token</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="bi bi-coin"></i>
+                </span>
+              </div>
+              <input
+                type="text"
+                id="token"
+                class="form-control"
+                formControlName="token"
+                required
+              />
+            </div>
+            <div
+              *ngIf="
+                userForm.get('token')?.invalid && userForm.get('token')?.touched
+              "
+              class="text-danger"
+            >
+              Token is required.
+            </div>
+          </div>
+
+
+
+          <!-- <button class="btn btn-info mt-3  btn-block"
+                (click)= "checkAvailability()"> Check Offers </button> -->
+          <!-- offers -->
+          <div *ngIf="ifOffers" class="offers form-group w-100">
+            <label class="mb-2" for="offers">Offers</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="bi bi-ticket-perforated"></i>
+                </span>
+              </div>
+              <select
+                id="offers"
+                class="form-control"
+                formControlName="offers"
+                placeholder="Select Available Offers"
+                required
+              >
+                <!-- <option disabled selected >Select available Offers</option> -->
+                <option value="" disabled selected>Select your option</option>
+                <option *ngFor="let offer of offerData" [value]="offer">
+                  {{ offer }}
+                </option>
+              </select>
+            </div>
+            <div
+              *ngIf="
+                userForm.get('offers')?.invalid &&
+                userForm.get('offers')?.touched
+              "
+              class="text-danger"
+            >
+              offers is required.
+            </div>
+          </div>
+          <!-- city -->
+
+          <div class="d-flex flex-lg-row flex-md-column gap-3">
+            <!-- state -->
+
+            <!-- zip Code -->
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-info mt-3 btn-block"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            [disabled]="userForm.invalid"
+          >
+            Pay Now
+          </button>
+        </form>
+      </div>
+
+      <!-- Modal -->
+      <!-- Button trigger modal -->
+      <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button> -->
+
+
+    </div>
+  </div>
+</div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <!-- <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> -->
+            <div class="modal-body">
+              <img src="../../../assets/success.gif" alt="success" />
+                <p>Payment Successful!!!</p>
+        
+            </div>
+            <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+          </div>
+        </div>
+      </div>
+</div>
