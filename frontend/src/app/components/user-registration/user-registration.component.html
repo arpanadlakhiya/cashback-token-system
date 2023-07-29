@@ -6,7 +6,7 @@
         <div id="container">
             <div id="registeration-container">
                 <h1>Register here</h1>
-                <form >
+                <form [formGroup]="registrationForm" (ngSubmit)="register()">
                     <div id="form-container">
                         <div class="form-class">
                             <label for="username">Username:</label>
@@ -33,7 +33,7 @@
                           </div>
                           
                     </div>
-                    <button type="submit">Register</button>
+                    <button (click)="register()" type="submit">Register</button>
                   </form>
             </div>
           

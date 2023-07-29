@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RegisterUserService } from 'src/app/service/register-user.service';
 // import { UserService } from '../services/user.service';
 
 
@@ -13,7 +15,8 @@ export class UserRegistrationComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    // private userService: UserService
+    private userService: RegisterUserService,
+    private router : Router
   ) {
     this.registrationForm = this.formBuilder.group({
       username: ['', [Validators.required]],
@@ -25,22 +28,25 @@ export class UserRegistrationComponent implements OnInit{
   ngOnInit(): void {
 }
 
-// onSubmit() {
-//   if (this.registrationForm.valid) {
-//     const userData = this.registrationForm.value;
-//     this.userService.registerUser(userData).subscribe(
-//       (response) => {
-//         // Handle successful registration
-//         console.log('User registered successfully!', response);
-//         // You can redirect the user to a login page or perform other actions as needed.
-//       },
-//       (error) => {
-//         // Handle registration errors
-//         console.error('Registration failed!', error);
-//       }
-//     );
-//   }
-// }
+register() {
+  console.log("HELLO I AM BEING HITTT")
+  if (this.registrationForm.valid) {
+    const userData = this.registrationForm.value;
+    this.userService.registerUser(userData).subscribe(
+      (response) => {
+        // Handle successful registration
+        console.log('User registered successfully!', response);
+        this.router.navigate(['/login'])
+        // You can redirect the user to a login page or perform other actions as needed.
+      },
+      (error) => {
+        // Handle registration errors
+        console.error('Registration failed!', error);
+      }
+    );
+  }
+}
+
 }
 
 
