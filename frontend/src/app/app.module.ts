@@ -8,6 +8,7 @@ import { UserRegistrationComponent } from './components/user-registration/user-r
 import { PaymentboardComponent } from './components/paymentboard/paymentboard.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 // import { DashboardComponent } from './public/dashboard/dashboard.component';
 
@@ -25,7 +26,8 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

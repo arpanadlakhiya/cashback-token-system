@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { of } from 'rxjs';
 
 @Injectable({
@@ -6,34 +8,16 @@ import { of } from 'rxjs';
 })
 export class PaymentServiceService {
 
-  constructor() {
+  constructor(private http: HttpClient) {}
 
 
-   }
+  apiURL : string = "/http://192.168.0.116:7016"
 getAllUsers(){
-  const users = [{
-    id: 1,
-    name : "USER 1"
-  },
-  {
-    id: 2,
-    name : "USER 2"
-  },
-  {
-    id: 3,
-    name : "USER 3"
-  },
-  {
-    id: 4,
-    name : "USER 4"
-  },
-  {
-    id: 5,
-    name : "USER 5"
-  }
-];
-
-return of (users)
+return this.http.get<{
+  success: boolean;
+  message: string;
+  data: any;
+}>(`${this.apiURL}/api/user/get-users`);
 }
 
 getAllOffers(){
