@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/hyperledger/fabric-chaincode-go/shim"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -32,15 +33,6 @@ func GetTransientData(ctx contractapi.TransactionContextInterface, key string) (
 	}
 
 	return dataStr, nil
-}
-
-func GetBatchFromTransient(ctx contractapi.TransactionContextInterface) ([]byte, error) {
-	batchStr, err := GetTransientData(ctx, DOCTYPE_BATCH)
-	if err != nil {
-		return nil, fmt.Errorf("error while getting transient data, %w", err)
-	}
-
-	return batchStr, nil
 }
 
 func SetEvent(ctx contractapi.TransactionContextInterface, eventName string, event interface{}) error {
@@ -83,4 +75,30 @@ func PutState(ctx contractapi.TransactionContextInterface, key string, v interfa
 	}
 
 	return nil
+}
+
+// Verify state does not exists on the ledger. Returns error if the state exists
+func VerifyStateDoesNotExist(ctx contractapi.TransactionContextInterface, key string) error {
+	state, err := ctx.GetStub().GetState(key)
+	if err != nil {
+		return fmt.Errorf("error while getting record from world state. Id:%s ,Error:%w", key, err)
+	}
+	if state != nil {
+		return fmt.Errorf("state already exists for key: %s", key)
+	}
+
+	return nil
+}
+
+func ConstructResponseFromIterator(resultsIterator shim.StateQueryIteratorInterface) ([]string, error) {
+	var data = make([]string, 0)
+	for resultsIterator.HasNext() {
+		queryResult, err := resultsIterator.Next()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting data from world state. Error: %v", err.Error())
+		}
+		data = append(data, string(queryResult.Value))
+	}
+
+	return data, nil
 }

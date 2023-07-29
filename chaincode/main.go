@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	cashbackGenerator := new(smartcontracts.CashbackGenerator)
+	cashbackGenerator := new(smartcontracts.CashbackContract)
 
 	chaincode, err := contractapi.NewChaincode(cashbackGenerator)
 

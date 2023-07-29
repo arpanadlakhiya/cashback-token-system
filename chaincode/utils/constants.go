@@ -1,15 +1,17 @@
 package utils
 
 const (
-	DOCTYPE_BATCH         = "batch"
-	BATCH_GROWN_EVENT     = "BatchGrown"
-	BATCH_PROCESSED_EVENT = "BatchProcessed"
-	BATCH_ROASTED_EVENT   = "BatchRoasted"
-	BATCH_SUPPLIED_EVENT  = "BatchSupplied"
-	BATCH_RETAIL_EVENT    = "BatchRetail"
-	FARMER_ROLE           = "FARMER"
-	PROCESSOR_ROLE        = "PROCESSOR"
-	ROASTER_ROLE          = "ROASTER"
-	SUPPLIER_ROLE         = "SUPPLIER"
-	RETAILER_ROLE         = "RETAILER"
+	DOCTYPE_CASHBACK = "cashback"
+	DOCTYPE_RULESET  = "ruleset"
+	DOCTYPE_TXN      = "transaction"
+	DOCTYPE_WALLET   = "wallet"
+
+	TXN_TRANSIENT     = "transaction"
+	RULESET_TRANSIENT = "ruleset"
+
+	STATUS_ACTIVE  = "ACTIVE"
+	STATUS_CLAIMED = "CLAIMED"
+	STATUS_EXPIRED = "EXPIRED"
+
+	WALLET_REGISTRATION_EVENT = "RegisterWallet"
 )

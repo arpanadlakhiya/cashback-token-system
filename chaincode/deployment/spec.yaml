@@ -1,16 +1,8 @@
 fabric:
   cas:
-  - "ca1.platform"
-  - "ca1.amazon"
-  - "ca1.flipkart"
-  - "ca1.misho"
-  - "ca1.myntra"
+  - "ca1.cashbackplatform"
   peers: 
-  - "peer0.platform"
-  - "peer0.amazon"
-  - "peer0.flipkart"
-  - "peer0.misho"
-  - "peer0.myntra"
+  - "peer0.cashbackplatform"
   orderers:
   - "orderer0.orderer"
   settings:
