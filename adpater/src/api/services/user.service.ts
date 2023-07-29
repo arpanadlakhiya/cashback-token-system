@@ -198,3 +198,45 @@ export const getUser = async (username: string) => {
     return null;
   }
 };
+
+export const getAllUsers = async (username: string) => {
+  try {
+    console.log(
+      `UserService : getAllUsers :: Fetching all users`
+    );
+
+    const dbClient = await db.getDBClient();
+
+    const users = await userDB.getAllUsers(dbClient, username);
+
+    if (users.length === 0) {
+      return HTTPResponseUtils.okResponse(
+        [],
+        "Fetched list of users",
+        true
+      );
+    }
+
+    let allUsers: string[] = [];
+    for (const userStr in users) {
+      const user: userInterface.UserDetails = JSON.parse(userStr);
+      if (user.username != username) {
+        allUsers.push(user.username);
+      }
+    }
+
+    console.log(
+      `UserService : getAllUsers :: Fetched all users`
+    );
+
+    return HTTPResponseUtils.okResponse(
+      allUsers,
+      "Fetched list of users",
+      true
+    );
+  } catch (err) {
+    console.log(`UserService : getAllUsers :: Error while fetching user details: ${err}`);
+
+    return HTTPResponseUtils.internalServerErrorResponse("Unable to fetch list of users");
+  }
+};

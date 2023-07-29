@@ -29,6 +29,7 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
         creation_time: req.body.creation_time,
         expiration_time: req.body.expiration_time,
         cashback_expiration_time: req.body.cashback_expiration_time,
+        user_wallet: req.body.user_wallet,
       };
 
       const response = await ruleController.createRuleset(
@@ -49,8 +50,8 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
   })();
 });
 
-
-  rulesetRouter.post("/claimRuleset", async (req: Request, res: Response) => {
+rulesetRouter.post("/claimRuleset", (req: Request, res: Response) => {
+  (async () => {
     console.log(
       `Request received for claimRuleset :: Body: ${JSON.stringify(req.body)}`
     );
@@ -62,45 +63,52 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
     }
 
     try {
-    console.log(req.body);
-    const claimruleset = {
+      console.log(req.body);
+      const claimruleset = {
         transactionId: req.body.transactionId,
         rulesetId: req.body.rulesetId,
-    }
+      };
 
-  
       const isRuleSetClamed = await ruleController.claimRuleset(claimruleset);
-  
-      res.status(isRuleSetClamed.statusCode).json(isRuleSetClamed.httpResponseMessage);
+
+      res
+        .status(isRuleSetClamed.statusCode)
+        .json(isRuleSetClamed.httpResponseMessage);
     } catch (err) {
-      console.error(`Route register: error occurred during claimRuleset: ${err.message}`);
-  
+      console.error(
+        `Route register: error occurred during claimRuleset: ${err.message}`
+      );
+
       res.status(500).json({
         message: "Error occurred while claimRuleset!",
       });
     }
-  });
+  })();
+});
 
-
-  rulesetRouter.get("/queryRuleset", async (req: Request, res: Response) => {
+rulesetRouter.get("/queryRuleset", (req: Request, res: Response) => {
+  (async () => {
     console.log(
       `Request received for queryRuleset :: Body: ${JSON.stringify(req.body)}`
     );
-  
 
     try {
-    console.log(req.query);
-    const queryId = req.query.queryId
+      console.log(req.query);
+      const queryId = req.query.queryId;
 
-  
       const isRuleSetClamed = await ruleController.queryRuleset(queryId);
-  
-      res.status(isRuleSetClamed.statusCode).json(isRuleSetClamed.httpResponseMessage);
+
+      res
+        .status(isRuleSetClamed.statusCode)
+        .json(isRuleSetClamed.httpResponseMessage);
     } catch (err) {
-      console.error(`Route register: error occurred during queryRuleset: ${err.message}`);
-  
+      console.error(
+        `Route register: error occurred during queryRuleset: ${err.message}`
+      );
+
       res.status(500).json({
         message: "Error occurred while queryRuleset!",
       });
     }
-  });
+  })();
+});

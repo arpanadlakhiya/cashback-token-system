@@ -35,8 +35,6 @@ func (rc *RulesetContract) CreateRuleset(
 		return false, errStr
 	}
 
-	ruleset.Status = utils.STATUS_ACTIVE
-
 	// Store data in public state
 	err = utils.PutState(ctx, ruleset.RulesetId, ruleset)
 	if err != nil {
@@ -163,10 +161,11 @@ func (rc *RulesetContract) QueryRuleset(
 
 func (rc *RulesetContract) QueryAllRulesets(
 	ctx contractapi.TransactionContextInterface,
+	userWallet string,
 ) ([]string, error) {
 	fmt.Printf("RulesetContract.QueryAllRulesets :: Querying all rulesets")
 
-	queryString := fmt.Sprintf(`{"selector":{"docType":"%s"}}`, utils.DOCTYPE_RULESET)
+	queryString := fmt.Sprintf(`{"selector":{"docType":"%s","user_wallet":"%s"}}`, utils.DOCTYPE_RULESET, userWallet)
 
 	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
 	if err != nil {
