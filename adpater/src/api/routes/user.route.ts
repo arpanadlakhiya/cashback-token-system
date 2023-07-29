@@ -21,9 +21,9 @@ userRouter.post("/register", async (req: Request, res: Response) => {
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
-      address: req.body.address,
-      role: req.body.role,
-      org: req.body.org,
+      // address: req.body.address,
+      // role: req.body.role,
+      // org: req.body.org,
     };
 
     const isRegistered = await userController.register(registrationRequest);

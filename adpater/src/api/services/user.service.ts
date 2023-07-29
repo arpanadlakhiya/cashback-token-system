@@ -9,11 +9,11 @@ import * as constants from "../../utils/constants";
 
 export const register = async (registrationDetails: userInterface.User) => {
   try {
-    if (registrationDetails.role.length === 0) {
-      return HTTPResponseUtils.internalServerErrorResponse(
-        "Please select a role for the user."
-      );
-    }
+    // if (registrationDetails.role.length === 0) {
+    //   return HTTPResponseUtils.internalServerErrorResponse(
+    //     "Please select a role for the user."
+    //   );
+    // }
 
     const validatePasswordRegex =
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -70,8 +70,8 @@ export const register = async (registrationDetails: userInterface.User) => {
           registrationDetails.username,
           registrationDetails.email,
           hashedPassword,
-          registrationDetails.address,
-          registrationDetails.role
+          // registrationDetails.address,
+          // registrationDetails.role
         );
 
         return registerUserWithCA;
@@ -113,9 +113,9 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
       username: user.username,
       password: user.password,
       email: user.email,
-      address: user.address,
-      role: user.roles,
-      org: user.org,
+      // address: user.address,
+      // role: user.roles,
+      // org: user.org,
     };
 
     const passwordMatched = await bcrypt.compare(
@@ -129,8 +129,8 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
 
     const userInfo: userInterface.UserResponse = {
       username: userObj.username,
-      role: userObj.role,
-      org: userObj.org,
+      // role: userObj.role,
+      // org: userObj.org,
     };
 
     const token = jwt.sign(userInfo, constants.JWT_KEY, {

@@ -46,8 +46,8 @@ export const registerUser = async (
   username: string,
   email: string,
   hashedPassword: string,
-  address: string,
-  role: string
+  // address: string,
+  // role: string
 ) => {
   console.log(`User DB :: Inserting user details for ${username}`);
 
@@ -57,8 +57,8 @@ export const registerUser = async (
       username,
       email,
       hashedPassword,
-      address,
-      role,
+      // address,
+      // role,
     ]);
 
     console.log(`User DB :: Inserted user details for ${username}`);
