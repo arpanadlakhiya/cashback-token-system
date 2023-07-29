@@ -9,6 +9,7 @@ import { userRouter } from "./routes/user.route";
 import { rulesetRouter } from "./routes/ruleset.route";
 import { cashbackRouter } from "./routes/cashback.route";
 import { transactionRouter } from "./routes/transaction.route";
+import { genericRouter } from "./routes/generic.route";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(express.json({ limit: "500mb" }));
 app.use(express.urlencoded({ extended: false, limit: "500mb" }));
 
 // API routes
+app.use(`${BASE_ROUTE}` + "/", genericRouter);
 app.use(`${BASE_ROUTE}` + "/user", userRouter);
 app.use(`${BASE_ROUTE}` + "/ruleset", rulesetRouter);
 app.use(`${BASE_ROUTE}` + "/cashback", cashbackRouter);

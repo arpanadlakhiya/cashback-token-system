@@ -6,7 +6,7 @@ import * as db from "../../utils/Database/dbClient";
 import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import * as constants from "../../utils/constants";
-import { registerWallet } from "../services/wallet.service";
+import { registerWallet } from "./wallet.service";
 
 export const register = async (registrationDetails: userInterface.User) => {
   console.log(
