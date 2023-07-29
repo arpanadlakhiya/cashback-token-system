@@ -20,8 +20,8 @@ export class UserRegistrationComponent implements OnInit{
   ) {
     this.registrationForm = this.formBuilder.group({
       username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -31,7 +31,7 @@ export class UserRegistrationComponent implements OnInit{
 register() {
   console.log("HELLO I AM BEING HITTT")
   if (this.registrationForm.valid) {
-    console.log("HELLO I AM BEING HITTT: valid")
+    console.log("HELLO I AM BEING HITTT part 2")
     const userData = this.registrationForm.value;
     this.userService.registerUser(userData).subscribe(
       (response) => {
