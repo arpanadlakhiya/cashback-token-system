@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 import * as transactionController from "../controller/transaction.controller";
 import * as transactionInterface from "../../interfaces/transaction.interface";
 import * as auth from "../middleware/auth.middleware";
-import * as constants from "../../utils/constants";
 
 export const transactionRouter = express.Router();
+
+transactionRouter.use(auth.verifyToken);
 
 transactionRouter.post(
   "/get-pre-txn-details",
