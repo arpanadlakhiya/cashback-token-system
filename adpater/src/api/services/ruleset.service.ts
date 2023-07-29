@@ -12,17 +12,31 @@ export const createRuleset = async (
   );
 
   try {
+    rulesetDetails.docType = constants.DOCTYPE_RULESET;
+    rulesetDetails.ruleId = randomUUID();
+    rulesetDetails.status = constants.STATUS_ACTIVE;
 
-   const invokeResponce =await dlt.invoke(
-            "CashbackContract",
-            "CreateRuleset",
-            [],
-            Buffer.from(JSON.stringify(rulesetDetails))
-        )
-    return HTTPResponseUtils.okResponse(invokeResponce)
+    await dlt.invoke(
+      constants.contractName,
+      constants.CREATE_RULESET,
+      [],
+      {
+        [constants.RULESET_TRANSIENT]: Buffer.from(JSON.stringify(rulesetDetails))
+      }
+    );
+
+    console.log(
+      `RulesetService : createRuleset :: Ruleset creation sent to chaincode with ID: ${rulesetDetails.ruleId}`
+    );
+
+    return HTTPResponseUtils.okResponse(
+      rulesetDetails,
+      "Created ruleset successfully",
+      true
+    );
   } catch (err) {
     console.log(
-      `Service ruleSet :: Failed to ruleSet user with Error: ${err}`
+      `RulesetService : createRuleset :: Failed to create ruleset: ${err}`
     );
 
     return HTTPResponseUtils.internalServerErrorResponse(

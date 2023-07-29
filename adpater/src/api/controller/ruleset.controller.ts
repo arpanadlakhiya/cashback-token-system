@@ -4,17 +4,16 @@ import * as userInterface from "../../interfaces/user.interface";
 
 export const createRuleset = async (
   ruleset: rulesetInterface.RuleSet,
-
+  user: userInterface.User
 ) => {
-  console.log(`RulesetController : createRuleset :: User ${ruleset}`);
+  console.log(`RulesetController : createRuleset :: User ${user.username}`);
 
   const userRegister = await rulesetService.createRuleset(ruleset);
 
-  console.log(`RulesetController : createRuleset :: Ack ${ruleset}`);
+  console.log(`RulesetController : createRuleset :: Ack ${user.username}`);
 
   return userRegister;
 };
-
 export const claimRuleset = async (clameRequest: any) => {
   console.log(`Controller claimRuleset :: User ${clameRequest.username}`);
 
