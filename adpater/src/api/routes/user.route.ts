@@ -25,9 +25,9 @@ userRouter.post("/register", async (req: Request, res: Response) => {
       role: req.body.role,
       org: req.body.org,
     };
-  
+
     const isRegistered = await userController.register(registrationRequest);
-  
+
     res.status(isRegistered.statusCode).json(isRegistered.httpResponseMessage);
   } catch (err) {
     console.error(`Route register: error occurred during register: ${err.message}`);
@@ -54,9 +54,9 @@ userRouter.post("/login", async (req: Request, res: Response) => {
       username: req.body.username,
       password: req.body.password,
     };
-  
+
     const loginResponse = await userController.login(loginRequest);
-  
+
     res.status(loginResponse.statusCode).json(loginResponse.httpResponseMessage);
   } catch (err) {
     console.error(`Route login: error occurred during login: ${err.message}`);

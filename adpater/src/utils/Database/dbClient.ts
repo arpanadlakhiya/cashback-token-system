@@ -31,7 +31,7 @@ export const getDBClient = async (): Promise<Client> => {
 export const executeSimpleQuery = async (
   query: string,
 ): Promise<types.ResultSet> => {
-  let client = await getDBClient()
+  const client = await getDBClient()
   return client.execute(query);
 };
 
@@ -71,7 +71,7 @@ export const executePaginatedQuery = async (
   fetchSize: number
 ): Promise<types.ResultSet> => {
   const options = pageState
-    ? { pageState: pageState, prepare: true, fetchSize: fetchSize }
-    : { prepare: true, fetchSize: fetchSize };
+    ? { pageState, prepare: true, fetchSize }
+    : { prepare: true, fetchSize };
   return client.execute(query, params, options);
 };

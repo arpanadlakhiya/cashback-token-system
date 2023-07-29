@@ -22,7 +22,7 @@ export const listener = async (event: ContractEvent) => {
     // Check if event Name is present inside eventMapping
     if (event.eventName in eventMapping) {
       // Retrieve and call method configured for event
-      let handlerMethod =
+      const handlerMethod =
         eventMapping[event.eventName as keyof typeof eventMapping];
 
       console.info(

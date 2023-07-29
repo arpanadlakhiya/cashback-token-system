@@ -7,4 +7,3 @@ export interface HTTPResponseMessage {
     message: string;
     data: any;
 }
-  

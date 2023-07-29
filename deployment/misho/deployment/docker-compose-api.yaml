@@ -2,7 +2,7 @@ version: "3"
 services:
     api:
         container_name: ${ORG_NAME}-api
-        image: cashback-token-chain-hlf:latest
+        image: cashback-token-system:latest
         env_file:
             - ../${ORG_ENV_FILE}
         working_dir: /usr/app

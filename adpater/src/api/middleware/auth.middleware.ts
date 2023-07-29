@@ -26,7 +26,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
 
 		try {
 			const tdecoded = jwt.verify(token, constants.JWT_KEY);
-			let jwtTokenPayload = tdecoded as jwt.JwtPayload;
+			const jwtTokenPayload = tdecoded as jwt.JwtPayload;
 
 			if (jwtTokenPayload.org != process.env.ORG_NAME) {
 				console.error(`Middleware verifyToken :: Invalid token. Org mismatch`);

@@ -10,9 +10,9 @@ export const getBatchById = async (
   batchType: string
 ) => {
   const result = await db.executeQuery(
-    dbClient, 
-    GET_BATCH_BY_ID, 
+    dbClient,
+    GET_BATCH_BY_ID,
     [batchId, batchType]);
-    
+
   return result.rows;
 }

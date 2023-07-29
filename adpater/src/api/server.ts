@@ -6,7 +6,6 @@ dotenv.config({
 import { init, configGenerated } from "../initialConfig";
 
 import { userRouter } from "./routes/user.route";
-import { batchRouter } from "./routes/batch.route";
 
 const app = express();
 
@@ -25,7 +24,6 @@ app.use(express.urlencoded({ extended: false, limit: '500mb' }));
 
 // API routes
 app.use(`${BASE_ROUTE}` + "/user", userRouter);
-app.use(`${BASE_ROUTE}` + "/batch", batchRouter);
 
 const server = app.listen(app.get("port"), async () => {
   init();

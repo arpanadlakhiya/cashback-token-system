@@ -29,7 +29,7 @@ export const badRequest = async (message: string, data: any = null) => {
   const httpResponseMessage: HTTPResponseMessage = {
     success: false,
     message,
-    data: data,
+    data,
   };
   return {
     statusCode: Http.BadGateway,

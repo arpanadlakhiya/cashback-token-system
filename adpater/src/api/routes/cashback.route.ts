@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import * as userController from "../controller/user.controller";
-import * as batchController from "../controller/batch.controller";
 import * as auth from "../middleware/auth.middleware";
 import * as batchInterface from "../../interfaces/batch.interface";
 

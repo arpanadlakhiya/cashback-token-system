@@ -15,7 +15,7 @@ import * as fs from "fs";
 
 let fabricGateway: Gateway;
 let fabricChannelNetwork: Network;
-let activeEndorsingPeers = new Map<string, string[]>();
+const activeEndorsingPeers = new Map<string, string[]>();
 
 const initDLTClient = async (wallet: Wallet, ccp: any) => {
   const gateway = new Gateway();
@@ -28,7 +28,7 @@ const initDLTClient = async (wallet: Wallet, ccp: any) => {
       throw new Error("User identity not found.");
     }
     console.info(`DLTClient initDLTClient :: Retrived User Identity`);
-    
+
     await gateway.connect(ccp, {
       wallet,
       identity: process.env.CLIENT_USER_ID ? process.env.CLIENT_USER_ID : "",
@@ -88,7 +88,7 @@ export const getContract = async (contractName: string) => {
     fabricChannelNetwork = await fabricGateway.getNetwork(
       process.env.DLT_CHANNEL_NAME ? process.env.DLT_CHANNEL_NAME : ""
     );
-    
+
     const endorsingPeers = fabricChannelNetwork.getChannel().getEndorsers();
   }
   return fabricChannelNetwork.getContract(contractName);
@@ -142,7 +142,7 @@ export const queryChaincodeByContract = async (
   functionName: string,
   parameters: any[]
 ) => {
-  let transaction: Transaction = contract.createTransaction(functionName);
+  const transaction: Transaction = contract.createTransaction(functionName);
 
   return transaction.evaluate(...parameters);
 };
@@ -226,7 +226,7 @@ export const getMspIds = async (mspId?: string): Promise<string[]> => {
     );
   }
 
-  let mspIds: string[] = fabricChannelNetwork.getChannel().getMspids();
+  const mspIds: string[] = fabricChannelNetwork.getChannel().getMspids();
 
   return mspIds;
 }
