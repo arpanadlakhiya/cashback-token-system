@@ -46,8 +46,7 @@ export const registerUser = async (
   username: string,
   email: string,
   hashedPassword: string,
-  // address: string,
-  // role: string
+  walletAddress: string
 ) => {
   console.log(`User DB :: Inserting user details for ${username}`);
 

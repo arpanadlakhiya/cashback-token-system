@@ -4,7 +4,6 @@
 **/logs/*
 **/network-config/*
 **/userWallets/
-**/certs/*
 **/*.pem
 **/*.cer
 **/*.crt

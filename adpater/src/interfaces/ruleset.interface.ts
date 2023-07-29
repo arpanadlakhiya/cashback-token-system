@@ -16,6 +16,7 @@ export interface ruleSet {
   }
 =======
 export interface RuleSet {
+  docType: string;
   ruleId: string;
   status: string;
   min_txn_limit: number;

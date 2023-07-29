@@ -6,15 +6,13 @@ import * as db from "../../utils/Database/dbClient";
 import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import * as constants from "../../utils/constants";
+import { registerWallet } from "../services/wallet.service";
 
 export const register = async (registrationDetails: userInterface.User) => {
+  console.log(
+    `UserService : register :: Validating user details ${registrationDetails.username}`
+  );
   try {
-    // if (registrationDetails.role.length === 0) {
-    //   return HTTPResponseUtils.internalServerErrorResponse(
-    //     "Please select a role for the user."
-    //   );
-    // }
-
     const validatePasswordRegex =
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
@@ -48,7 +46,7 @@ export const register = async (registrationDetails: userInterface.User) => {
       );
 
       console.log(
-        `Service register :: Registering user ${registrationDetails.username}`
+        `UserService : register :: Registering user ${registrationDetails.username}`
       );
 
       const registerUserWithCA = await registerUser.registerAndEnrollUser(
@@ -58,6 +56,21 @@ export const register = async (registrationDetails: userInterface.User) => {
       );
 
       if (registerUserWithCA.statusCode === 200) {
+        console.log(
+          `UserService : register :: Registering user wallet ${registrationDetails.username}`
+        );
+
+        // Resgiter user wallet
+        const userWallet = await registerWallet(registrationDetails.username);
+
+        if (!userWallet) {
+          throw new Error("error occurred while registering user wallet");
+        }
+
+        console.log(
+          `UserService : register :: Registered user wallet ${registrationDetails.username} by address ${userWallet.address}`
+        );
+
         const maxUserId = await userDB.getMaxUserID(dbClient);
 
         let userId = 0;
@@ -70,14 +83,19 @@ export const register = async (registrationDetails: userInterface.User) => {
           registrationDetails.username,
           registrationDetails.email,
           hashedPassword,
-          // registrationDetails.address,
-          // registrationDetails.role
+          userWallet.address
         );
 
-        return registerUserWithCA;
+        console.log(
+          `UserService : register :: Registered user successfully ${registrationDetails.username}`
+        );
       } else {
-        return registerUserWithCA;
+        console.log(
+          `UserService : register :: Error occurred while registering user ${registrationDetails.username}: ${registerUserWithCA}`
+        );
       }
+
+      return registerUserWithCA;
     } else {
       return HTTPResponseUtils.internalServerErrorResponse(
         "User with given username or email is already registered."
@@ -85,7 +103,7 @@ export const register = async (registrationDetails: userInterface.User) => {
     }
   } catch (err) {
     console.log(
-      `Service register :: Failed to register user with Error: ${err}`
+      `UserService : register :: Failed to register user with Error: ${err}`
     );
 
     return HTTPResponseUtils.internalServerErrorResponse(
@@ -97,7 +115,7 @@ export const register = async (registrationDetails: userInterface.User) => {
 export const login = async (userLoginInfo: userInterface.LoginRequest) => {
   try {
     console.log(
-      `Service login :: User login service for ${userLoginInfo.username}`
+      `UserService : login :: User login service for ${userLoginInfo.username}`
     );
 
     const dbClient = await db.getDBClient();
@@ -112,10 +130,7 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
       id: user.id.toString(),
       username: user.username,
       password: user.password,
-      email: user.email,
-      // address: user.address,
-      // role: user.roles,
-      // org: user.org,
+      email: user.email
     };
 
     const passwordMatched = await bcrypt.compare(
@@ -128,23 +143,21 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
     }
 
     const userInfo: userInterface.UserResponse = {
-      username: userObj.username,
-      // role: userObj.role,
-      // org: userObj.org,
+      username: userObj.username
     };
 
     const token = jwt.sign(userInfo, constants.JWT_KEY, {
       expiresIn: constants.JWT_EXPIRATION,
     });
 
-    console.log(`Service login :: User ${userObj.username} is logged in`);
+    console.log(`UserService : login :: User ${userObj.username} is logged in`);
 
     return await HTTPResponseUtils.okResponse({
       token,
       userInfo,
     });
   } catch (err) {
-    console.log(`Service login :: Error while login due to  ${err}`);
+    console.log(`UserService : login :: Error while login due to  ${err}`);
 
     return HTTPResponseUtils.internalServerErrorResponse(
       "Error while logging in!"

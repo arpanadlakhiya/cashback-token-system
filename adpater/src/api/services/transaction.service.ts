@@ -1,17 +1,31 @@
 import * as transactionInterface from "../../interfaces/transaction.interface";
 import * as HTTPResponseUtils from "../../utils/httpResponseUtils";
-import * as dlt from "../../utils/hlfClient/hlfClient"
-
+import * as hlf from "../../utils/hlfClient/hlfClient";
+import * as constants from "../../utils/constants";
 
 export const simulateTransaction = async (
-  transaction: transactionInterface.Transaction
+  transaction: transactionInterface.Transaction,
+  rulesetId: string,
+  cashbackTokenId: string
 ) => {
   console.log(
     `TransactionService : simulateTransaction :: Simulating transaction ${transaction}`
   );
 
   try {
-    //  await dlt.invoke
+    await hlf.invoke(
+      constants.contractName,
+      constants.SIMULATE_TRANSACTION,
+      [rulesetId, cashbackTokenId],
+      {
+        [constants.TXN_TRANSIENT]: Buffer.from(JSON.stringify(transaction)),
+      }
+    );
+
+    console.log(
+      `TransactionService : simulateTransaction :: Transaction sent to chaincode`
+    );
+
     return HTTPResponseUtils.okResponse(
       transaction,
       "Simulated transaction successfully",
@@ -19,11 +33,11 @@ export const simulateTransaction = async (
     );
   } catch (err) {
     console.log(
-      `TransactionService : simulateTransaction :: Failed to simulate transaction: ${err}`
+      `TransactionService : simulateTransaction :: Failed to send transaction to chaincode: ${err}`
     );
 
     return HTTPResponseUtils.internalServerErrorResponse(
-      "Failed to register user"
+      "Failed to simulate transaction"
     );
   }
 };
