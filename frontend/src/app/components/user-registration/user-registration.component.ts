@@ -31,6 +31,7 @@ export class UserRegistrationComponent implements OnInit{
 register() {
   console.log("HELLO I AM BEING HITTT")
   if (this.registrationForm.valid) {
+    console.log("HELLO I AM BEING HITTT: valid")
     const userData = this.registrationForm.value;
     this.userService.registerUser(userData).subscribe(
       (response) => {

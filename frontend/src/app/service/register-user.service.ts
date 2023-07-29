@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 export class RegisterUserService {
 
   constructor(private http: HttpClient) {}
-  apiURL : string = "/http://192.168.0.116:7016"
+  apiURL : string = "http://192.168.0.116:7016"
  
   registerUser(blobData: any) {
     console.log("blobData",blobData)
