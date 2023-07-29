@@ -4,11 +4,19 @@ import * as userInterface from "../../interfaces/user.interface";
 
 export const simulateTransaction = async (
   transaction: transactionInterface.Transaction,
-  user: userInterface.User
+  user: userInterface.User,
+  rulesetId: string,
+  cashbackTokenId: string
 ) => {
-    console.log(`TransactionController : simulateTransaction :: User ${user}`);
+    console.log(`TransactionController : simulateTransaction :: User ${user.username}`);
   
-    const userRegister = await transactionService.simulateTransaction(transaction);
+    const userRegister = await transactionService.simulateTransaction(
+      transaction,
+      rulesetId,
+      cashbackTokenId
+    );
   
-    return userRegister
+    console.log(`TransactionController : simulateTransaction :: Ack ${user.username}`);
+
+    return userRegister;
   };
