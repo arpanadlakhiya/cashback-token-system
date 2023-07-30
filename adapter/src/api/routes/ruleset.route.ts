@@ -14,7 +14,9 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
 
     if (req.body.length === 0) {
       return res.status(400).json({
+        data: null,
         message: "Invalid request body",
+        success: false
       });
     }
 
@@ -43,7 +45,9 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
       );
 
       res.status(500).json({
+        data: null,
         message: "Error occurred while creating ruleset",
+        success: false
       });
     }
   })();
@@ -57,7 +61,9 @@ rulesetRouter.post("/claimRuleset", (req: Request, res: Response) => {
 
     if (req.body.length === 0) {
       return res.status(400).json({
+        data: null,
         message: "Invalid request body",
+        success: false
       });
     }
 
@@ -79,7 +85,9 @@ rulesetRouter.post("/claimRuleset", (req: Request, res: Response) => {
       );
 
       res.status(500).json({
+        data: null,
         message: "Error occurred while claimRuleset!",
+        success: false
       });
     }
   })();
@@ -106,7 +114,9 @@ rulesetRouter.get("/queryRuleset", (req: Request, res: Response) => {
       );
 
       res.status(500).json({
+        data: null,
         message: "Error occurred while queryRuleset!",
+        success: false
       });
     }
   })();

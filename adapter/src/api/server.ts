@@ -7,7 +7,6 @@ import { init, configGenerated } from "../initialConfig";
 
 import { userRouter } from "./routes/user.route";
 import { rulesetRouter } from "./routes/ruleset.route";
-import { cashbackRouter } from "./routes/cashback.route";
 import { transactionRouter } from "./routes/transaction.route";
 import { genericRouter } from "./routes/generic.route";
 
@@ -32,7 +31,6 @@ app.use(express.urlencoded({ extended: false, limit: "500mb" }));
 app.use(`${BASE_ROUTE}` + "/", genericRouter);
 app.use(`${BASE_ROUTE}` + "/user", userRouter);
 app.use(`${BASE_ROUTE}` + "/ruleset", rulesetRouter);
-app.use(`${BASE_ROUTE}` + "/cashback", cashbackRouter);
 app.use(`${BASE_ROUTE}` + "/transaction", transactionRouter);
 
 const server = app.listen(app.get("port"), () => {
