@@ -66,7 +66,7 @@ export const generateWallet = async () => {
     );
     wallet = key.getWallet();
 
-    const jsonWallet = JSON.parse(JSON.stringify(key));
+    JSON.parse(JSON.stringify(key));
     console.log(`WalletService : generateWallet :: Extracted wallet from HDKey`);
 
     const keystoreFile = wallet.getV3Filename();
