@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterUserService } from 'src/app/service/register-user.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private service: RegisterUserService
     ) {
     this.myForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,4 +48,20 @@ export class LoginComponent {
     this.router.navigate(['/paymentdashboard']);
   }
 
+  register() {
+    console.log("HELLO I AM BEING HITTT")
+    if (this.myForm.valid) {
+      console.log("HELLO I AM BEING HITTT part 2")
+      const userData = this.myForm.value;
+      this.service.loginUser(userData).subscribe(
+        (response) => {
+          console.log('User logged in successfully!', response);
+          this.router.navigate(['/paymentdashboard'])
+        },
+        (error) => {
+          console.error('Login failed!', error);
+        }
+      );
+    }
+  }
 }

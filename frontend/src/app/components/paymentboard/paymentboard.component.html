@@ -121,8 +121,8 @@
               >
                 <!-- <option disabled selected >Select available Offers</option> -->
                 <option value="" disabled selected>Select your option</option>
-                <option *ngFor="let offer of displayapplicableOffers" [value]="offer.cashback_percentage">
-                  {{ offer.cashback_percentage }} - {{offer.valid_upto}} - {{offer.max_cashback_limit}}
+                <option *ngFor="let offer of applicableOffers" [value]="offer.cashback_percentage">
+                 Cashback Percentage : {{ offer.cashback_percentage }}% - Valid Upto: {{offer.valid_upto}} - Off upto: {{offer.max_cashback_limit}}
                 </option>
               </select>
             </div>

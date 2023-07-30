@@ -10,12 +10,15 @@ export class RegisterUserService {
   apiURL : string = "http://192.168.0.116:7016"
  
   registerUser(blobData: any) {
+    let url = this.apiURL+'/api/user/register';
     console.log("blobData",blobData)
-    return this.http.post<{
-      success: boolean;
-      message: string;
-      data: any;
-    }>(`${this.apiURL}/api/user/register`, blobData);
+    return this.http.post(url, blobData);
+  }
+
+  loginUser(blobData: any) {
+    let url = this.apiURL+'/api/user/login';
+    console.log("blobData",blobData)
+    return this.http.post(url, blobData);
   }
 }
 

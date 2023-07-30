@@ -65,7 +65,7 @@ export class PaymentboardComponent {
     this.service.getAllOffers(this.userForm.value.amount).subscribe((applicableOffers: any) =>
     applicableOffers.forEach((element: any) => {
         if (!(this.added)) {
-         this.applicableOffers = applicableOffers;
+         this.applicableOffers.push(applicableOffers);
          this.displayapplicableOffers = this.extractDisplayedApplicableOffers(applicableOffers)
         }
       })
