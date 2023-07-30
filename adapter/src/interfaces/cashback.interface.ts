@@ -10,3 +10,13 @@ export interface CashbackDetails {
 	rulesetId: string;
 	claimedTxnId: string;
 }
+
+export interface CashbackTrimmed {
+	id: string;
+	value: number;
+}
+
+export interface AllCashback {
+	totalAmount: number;
+	cashbackTokens: CashbackTrimmed[];
+}
