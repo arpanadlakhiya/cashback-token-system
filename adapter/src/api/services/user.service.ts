@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import * as constants from "../../utils/constants";
 import { registerWallet } from "./wallet.service";
+import { fetchAllCashback } from "./cashback.service";
 
 export const register = async (registrationDetails: userInterface.User) => {
   console.log(
@@ -143,7 +144,8 @@ export const login = async (userLoginInfo: userInterface.LoginRequest) => {
     }
 
     const userInfo: userInterface.UserResponse = {
-      username: userObj.username
+      username: userObj.username,
+      org: process.env.ORG_NAME
     };
 
     const token = jwt.sign(userInfo, constants.JWT_KEY, {
@@ -207,7 +209,7 @@ export const getAllUsers = async (username: string) => {
 
     const dbClient = await db.getDBClient();
 
-    const users = await userDB.getAllUsers(dbClient, username);
+    const users = await userDB.getAllUsers(dbClient);
 
     if (users.length === 0) {
       return HTTPResponseUtils.okResponse(
@@ -218,8 +220,7 @@ export const getAllUsers = async (username: string) => {
     }
 
     let allUsers: string[] = [];
-    for (const userStr in users) {
-      const user: userInterface.UserDetails = JSON.parse(userStr);
+    for (const user of users) {
       if (user.username != username) {
         allUsers.push(user.username);
       }
@@ -238,5 +239,42 @@ export const getAllUsers = async (username: string) => {
     console.log(`UserService : getAllUsers :: Error while fetching user details: ${err}`);
 
     return HTTPResponseUtils.internalServerErrorResponse("Unable to fetch list of users");
+  }
+};
+
+export const getUserByName = async (username: string) => {
+  try {
+    console.log(
+      `UserService : getUserByName :: Fetching user details for username: ${username}`
+    );
+
+    const userDetails = await getUser(username);
+
+    if (!userDetails) {
+      throw new Error(`unable to fetch user details for ${username}`);
+    }
+
+    const allCashback = await fetchAllCashback(userDetails)
+
+    if (!allCashback) {
+      throw new Error(`unable to fetch cashback details for ${username}`);
+    }
+
+    userDetails.availableCashback = allCashback;
+    userDetails.password = "**masked**";
+
+    console.log(
+      `UserService : getUserByName :: Fetched user details for username ${username}`
+    );
+
+    return HTTPResponseUtils.okResponse(
+      userDetails,
+      "Fetched user details successfully",
+      true
+    );
+  } catch (err) {
+    console.log(`UserService : getUserByName :: Error while fetching user details: ${err}`);
+
+    return HTTPResponseUtils.internalServerErrorResponse("Unable to fetch user details");
   }
 };

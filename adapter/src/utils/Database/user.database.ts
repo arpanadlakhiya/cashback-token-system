@@ -16,7 +16,7 @@ export const getUser = async (dbClient: Client, username: string) => {
   return result.rows;
 };
 
-export const getAllUsers = async (dbClient: Client, username: string) => {
+export const getAllUsers = async (dbClient: Client) => {
   const result = await db.executeQuery(dbClient, GET_ALL_USER, []);
   return result.rows;
 };

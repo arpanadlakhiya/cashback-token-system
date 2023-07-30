@@ -33,8 +33,7 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
       };
 
       const response = await ruleController.createRuleset(
-        ruleset,
-        req.body.user
+        ruleset
       );
 
       res.status(response.statusCode).json(response.httpResponseMessage);
