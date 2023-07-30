@@ -145,7 +145,7 @@
           </div>
 
 <!-- Deducted Amount -->
-          <div class="address form-group w-100">
+          <!-- <div class="address form-group w-100">
             <label class="mb-2" for="amount">Discounted Amount</label>
             <div class="input-group">
               <div class="input-group-prepend">
@@ -156,6 +156,24 @@
             
             </div>
            <p>{{discountedAmount}}</p>
+          </div> -->
+
+          <div class="address form-group w-100">
+            <label class="mb-2" for="amount">Discounted Amount</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="bi bi-currency-rupee"></i>
+                </span>
+              </div>
+              <input
+                type="text"
+                id="amount"
+                class="form-control"
+                formControlName="deductedAmount"
+                required
+              />
+            </div>
           </div>
 
           <button
@@ -170,11 +188,6 @@
         </form>
       </div>
 
-      <!-- Modal -->
-      <!-- Button trigger modal -->
-      <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button> -->
 
 
     </div>
