@@ -13,11 +13,8 @@ export class PaymentServiceService {
 
   apiURL : string = "http://192.168.0.116:7016"
 getAllUsers(){
-return this.http.get<{
-  success: boolean;
-  message: string;
-  data: any;
-}>(`${this.apiURL}/api/user/get-users`);
+  let url = this.apiURL+'/api/user/get-users';
+return this.http.get(url);
 }
 
 getAllOffers(amount : number){
@@ -31,28 +28,4 @@ getAllOffers(amount : number){
     response.data.applicableOffers)
   );
   }
-//   const offers = [{
-//     id: 1,
-//     name : "Offer 1"
-//   },
-//   {
-//     id: 2,
-//     name : "Offer 2"
-//   },
-//   {
-//     id: 3,
-//     name : "Offer 3"
-//   },
-//   {
-//     id: 4,
-//     name : "Offer 4"
-//   },
-//   {
-//     id: 5,
-//     name : "Offer 5"
-//   }
-// ];
-
-// return of (offers)
-// }
 }

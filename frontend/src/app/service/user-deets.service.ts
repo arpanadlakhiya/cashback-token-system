@@ -12,12 +12,9 @@ export class UserDeetsService {
 
   getUserDetails() {
     // return this.http.get(`${this.apiURL}/api/user/getAllUser`);
-    const url = `${this.apiURL}/api/user/getAllUser`;
+
+    const url = this.apiURL+'/api/user/getAllUser';
     return this.http
-      .get<{
-        success: boolean;
-        message: string;
-        data: any;
-      }>(url)
+      .get(url)
   }
 }

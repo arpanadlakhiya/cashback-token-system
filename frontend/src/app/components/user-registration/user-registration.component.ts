@@ -35,13 +35,10 @@ register() {
     const userData = this.registrationForm.value;
     this.userService.registerUser(userData).subscribe(
       (response) => {
-        // Handle successful registration
         console.log('User registered successfully!', response);
         this.router.navigate(['/login'])
-        // You can redirect the user to a login page or perform other actions as needed.
       },
       (error) => {
-        // Handle registration errors
         console.error('Registration failed!', error);
       }
     );

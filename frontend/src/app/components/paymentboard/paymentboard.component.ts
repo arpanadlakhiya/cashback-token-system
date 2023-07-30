@@ -20,6 +20,7 @@ export class PaymentboardComponent {
   applicableOffers:any[] = [];
   displayapplicableOffers:any[] = [];
   discountedAmount: number = 0;
+  cashbackAmount: any;
   constructor(
     private formBuilder: FormBuilder,
     private service: PaymentServiceService
@@ -63,10 +64,12 @@ export class PaymentboardComponent {
   getOffers() {
     console.log(`its me ${this.userForm.value.amount}`);
     this.service.getAllOffers(this.userForm.value.amount).subscribe((applicableOffers: any) =>
+    
     applicableOffers.forEach((element: any) => {
+      this.cashbackAmount = applicableOffers.cashbackAmount;
         if (!(this.added)) {
-         this.applicableOffers = applicableOffers;
-         this.displayapplicableOffers = this.extractDisplayedApplicableOffers(applicableOffers)
+         this.applicableOffers.push(applicableOffers.applicableOffers);
+         this.displayapplicableOffers = this.extractDisplayedApplicableOffers(this.applicableOffers)
         }
       })
     )
@@ -83,8 +86,7 @@ export class PaymentboardComponent {
   }
 
   calculateDiscountedAmount(){
-    const maxCashbackLimitSum = this.applicableOffers.reduce((sum, offer) => sum + offer.max_cashback_limit, 0);
-    this.discountedAmount = this.userForm.value.amount - maxCashbackLimitSum
+    this.discountedAmount = this.userForm.value.amount - this.cashbackAmount
   }
 
   get token() {
