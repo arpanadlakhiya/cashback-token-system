@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { PaymentboardComponent } from './components/paymentboard/paymentboard.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'paymentdashboard',
     component: PaymentboardComponent,
+  },
+  {
+    path: 'userdetails',
+    component: UserListComponent
   }
 ];
 

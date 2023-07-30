@@ -17,4 +17,11 @@ export class UserDeetsService {
     return this.http
       .get(url)
   }
+
+  getUser() {
+    let url = this.apiURL+'/api/user/get-user/Saloni7';
+    console.log("blobData")
+    return this.http.get(url);
+  }
+
 }

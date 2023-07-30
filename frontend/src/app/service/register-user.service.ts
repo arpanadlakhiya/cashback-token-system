@@ -20,5 +20,7 @@ export class RegisterUserService {
     console.log("blobData",blobData)
     return this.http.post(url, blobData);
   }
+
+
 }
 
