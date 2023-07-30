@@ -31,3 +31,13 @@ export const getUsers = async (user: userInterface.User) => {
 
   return userLogin;
 };
+
+export const getUserByName = async (user: userInterface.User) => {
+  console.log(`UserController : getUserByName :: User ${user.username}`);
+
+  const userLogin = await userService.getUserByName(user.username);
+
+  console.log(`UserController : getUserByName :: Ack ${user.username}`);
+
+  return userLogin;
+};

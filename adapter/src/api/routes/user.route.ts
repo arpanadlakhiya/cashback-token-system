@@ -89,3 +89,35 @@ userRouter.get("/get-users", (req: Request, res: Response) => {
     }
   })();
 });
+
+userRouter.get("/get-user/:username", (req: Request, res: Response) => {
+  (async () => {
+    console.log(
+      `UserRouter : get-users :: Request received for fetching all users`
+    );
+
+    if (!req.params.username) {
+      return res.status(400).json({
+        message: "Username not provided"
+      });
+    }
+
+    if (req.body.user.username != req.params.username) {
+      return res.status(400).json({
+        message: "Operation forbidden"
+      });
+    }
+  
+    try {  
+      const usersListRes = await userController.getUserByName(req.body.user);
+  
+      res.status(usersListRes.statusCode).json(usersListRes.httpResponseMessage);
+    } catch (err) {
+      console.error(`UserRouter : get-users :: error occurred while fetching all users: ${err.message}`);
+  
+      res.status(500).json({
+        message: "Error occurred while fetching all users",
+      });
+    }
+  })();
+});
