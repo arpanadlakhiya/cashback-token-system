@@ -87,11 +87,13 @@ export const fetchAllCashback = async (
   
     for (const tokenStr of availableCashbackTokens) {
       const token: cashbackInterface.CashbackDetails = JSON.parse(tokenStr);
-      availableCashback.totalAmount += token.value;
-      availableCashback.cashbackTokens.push({
-        id: token.id,
-        value: token.value
-      });
+      if (token.status === constants.STATUS_ACTIVE) {
+        availableCashback.totalAmount += token.value;
+        availableCashback.cashbackTokens.push({
+          id: token.id,
+          value: token.value
+        });
+      }
     }
   
     console.log(

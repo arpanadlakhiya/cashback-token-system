@@ -10,4 +10,4 @@ for path in ${adapter_path[@]}; do
   cd ..
 done
 
-./cleanup-residual-files.sh
+./cleanup-files.sh

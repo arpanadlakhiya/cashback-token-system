@@ -1,6 +1,6 @@
 #! /bin/bash
 
-adapter_paths=("./farmer" "./processor" "./roaster" "./supplier" "./retailer")
+adapter_paths=("./cashbackplatform")
 
 for path in ${adapter_paths[@]}; do
   echo "Deleting keystore, wallets and network config for: ${path}"
