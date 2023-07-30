@@ -121,8 +121,8 @@
               >
                 <!-- <option disabled selected >Select available Offers</option> -->
                 <option value="" disabled selected>Select your option</option>
-                <option *ngFor="let offer of offerData" [value]="offer">
-                  {{ offer }}
+                <option *ngFor="let offer of displayapplicableOffers" [value]="offer.cashback_percentage">
+                  {{ offer.cashback_percentage }} - {{offer.valid_upto}} - {{offer.max_cashback_limit}}
                 </option>
               </select>
             </div>
@@ -142,6 +142,20 @@
             <!-- state -->
 
             <!-- zip Code -->
+          </div>
+
+<!-- Deducted Amount -->
+          <div class="address form-group w-100">
+            <label class="mb-2" for="amount">Discounted Amount</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="bi bi-currency-rupee"></i>
+                </span>
+              </div>
+            
+            </div>
+           <p>{{discountedAmount}}</p>
           </div>
 
           <button

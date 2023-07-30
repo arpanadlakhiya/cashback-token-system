@@ -17,6 +17,9 @@ export class PaymentboardComponent {
   ifAvailable: boolean = false;
   added: boolean = false;
   ifOffers:boolean = false;
+  applicableOffers:any[] = [];
+  displayapplicableOffers:any[] = [];
+  discountedAmount: number = 0;
   constructor(
     private formBuilder: FormBuilder,
     private service: PaymentServiceService
@@ -27,6 +30,7 @@ export class PaymentboardComponent {
   ngOnInit(): void {
     this.initiateForm();
     this.getUsers();
+    this.calculateDiscountedAmount();
   }
 
   initiateForm(): void {
@@ -42,7 +46,7 @@ export class PaymentboardComponent {
   onSubmit(): void {
     if (this.userForm.valid) {
       // Form is valid, perform form submission or data handling logic
-      console.log(this.userForm.value);
+      console.log(this.userForm.value.amount);
     }
   }
 
@@ -57,14 +61,30 @@ export class PaymentboardComponent {
   }
 
   getOffers() {
-    this.service.getAllOffers().subscribe((data: any) =>
-      data.forEach((element: any) => {
+    console.log(`its me ${this.userForm.value.amount}`);
+    this.service.getAllOffers(this.userForm.value.amount).subscribe((applicableOffers: any) =>
+    applicableOffers.forEach((element: any) => {
         if (!(this.added)) {
-          this.offerData.push(element.name)
+         this.applicableOffers = applicableOffers;
+         this.displayapplicableOffers = this.extractDisplayedApplicableOffers(applicableOffers)
         }
       })
     )
     this.added = true
+  }
+
+  private extractDisplayedApplicableOffers(applicableOffers: any[]): any[] {
+    // Map and return only the required fields for display
+    return applicableOffers.map((offer: any) => ({
+      cashback_percentage: offer.cashback_percentage,
+      valid_upto: offer.expiration_time,
+      max_cashback_limit: offer.max_cashback_limit
+    }));
+  }
+
+  calculateDiscountedAmount(){
+    const maxCashbackLimitSum = this.applicableOffers.reduce((sum, offer) => sum + offer.max_cashback_limit, 0);
+    this.discountedAmount = this.userForm.value.amount - maxCashbackLimitSum
   }
 
   get token() {

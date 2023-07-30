@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UserDeetsService } from 'src/app/service/user-deets.service';
+
 
 @Component({
   selector: 'app-user-list',
@@ -6,5 +8,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent {
+  
 
+  constructor (private userDetails : UserDeetsService) {}
+  ngOnInit():void
+{
+this.fetchUserDetails();
+}
+
+fetchUserDetails() : void{
+  this.userDetails.getUserDetails().subscribe(
+(response) =>{
+  console.log(response)
+}
+  )
+}
 }
