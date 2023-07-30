@@ -21,6 +21,7 @@ export class PaymentboardComponent {
   displayapplicableOffers:any[] = [];
   discountedAmount: number = 0;
   cashbackAmount: any;
+  userDetails: string = "Arpan";
   constructor(
     private formBuilder: FormBuilder,
     private service: PaymentServiceService
@@ -52,28 +53,27 @@ export class PaymentboardComponent {
   }
 
   getUsers() {
-    this.service.getAllUsers().subscribe((data: any) =>
-      data.forEach((element: any) => {
+    // this.service.getAllUsers().subscribe((data: any) =>
+    //   data.forEach((element: any) => {
 
-        this.userData.push(element.name)
+    //     this.userData.push(element.name)
 
-      })
-    )
+    //   })
+    // )
+    this.userData.push({id : 1,name: "Saloni"},
+    {id : 2,name: "Diptesh"})
   }
 
   getOffers() {
-    console.log(`its me ${this.userForm.value.amount}`);
-    this.service.getAllOffers(this.userForm.value.amount).subscribe((applicableOffers: any) =>
+    // console.log(`its me ${this.userForm.value.amount}`);
+    // this.service.getAllOffers(this.userForm.value.amount).subscribe((applicableOffers: any) =>
     
-    applicableOffers.forEach((element: any) => {
-      this.cashbackAmount = applicableOffers.cashbackAmount;
-        if (!(this.added)) {
-         this.applicableOffers.push(applicableOffers.applicableOffers);
-         this.displayapplicableOffers = this.extractDisplayedApplicableOffers(this.applicableOffers)
-        }
-      })
-    )
-    this.added = true
+    // applicableOffers.forEach((element: any) => {
+    //   this.applicableOffers.push(applicableOffers.applicableOffers);
+    //   })
+    // )
+    // this.added = true
+    this.applicableOffers.push({cashbackoffer : "5", amount : "475"});
   }
 
   private extractDisplayedApplicableOffers(applicableOffers: any[]): any[] {
@@ -86,7 +86,7 @@ export class PaymentboardComponent {
   }
 
   calculateDiscountedAmount(){
-    this.discountedAmount = this.userForm.value.amount - this.cashbackAmount
+    this.discountedAmount = 475;
   }
 
   get token() {
