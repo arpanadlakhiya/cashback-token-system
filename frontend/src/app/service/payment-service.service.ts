@@ -28,4 +28,6 @@ getAllOffers(amount : number){
     response.data.applicableOffers)
   );
   }
+
+  
 }
