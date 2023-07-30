@@ -13,7 +13,9 @@ userRouter.post("/register", (req: Request, res: Response) => {
   
     if (req.body.length === 0) {
       return res.status(400).json({
+        data: null,
         message: "Invalid request body",
+        success: false
       });
     }
   
@@ -31,7 +33,9 @@ userRouter.post("/register", (req: Request, res: Response) => {
       console.log(`UserRouter : register :: error occurred during register: ${err.message}`);
   
       res.status(500).json({
+        data: null,
         message: "Error occurred while registering user!",
+        success: false
       });
     }
   })();
@@ -45,7 +49,9 @@ userRouter.post("/login", (req: Request, res: Response) => {
   
     if (req.body.length === 0) {
       return res.status(400).json({
+        data: null,
         message: "Invalid request body",
+        success: false
       });
     }
   
@@ -62,7 +68,9 @@ userRouter.post("/login", (req: Request, res: Response) => {
       console.error(`UserRouter : login :: error occurred during login: ${err.message}`);
   
       res.status(500).json({
+        data: null,
         message: "Error occurred during login!",
+        success: false
       });
     }
   })();
@@ -84,7 +92,9 @@ userRouter.get("/get-users", (req: Request, res: Response) => {
       console.error(`UserRouter : get-users :: error occurred while fetching all users: ${err.message}`);
   
       res.status(500).json({
+        data: null,
         message: "Error occurred while fetching all users",
+        success: false
       });
     }
   })();
@@ -98,13 +108,17 @@ userRouter.get("/get-user/:username", (req: Request, res: Response) => {
 
     if (!req.params.username) {
       return res.status(400).json({
-        message: "Username not provided"
+        data: null,
+        message: "Username not provided",
+        success: false
       });
     }
 
     if (req.body.user.username != req.params.username) {
       return res.status(400).json({
-        message: "Operation forbidden"
+        data: null,
+        message: "Operation forbidden",
+        success: false
       });
     }
   
@@ -116,7 +130,9 @@ userRouter.get("/get-user/:username", (req: Request, res: Response) => {
       console.error(`UserRouter : get-users :: error occurred while fetching all users: ${err.message}`);
   
       res.status(500).json({
+        data: null,
         message: "Error occurred while fetching all users",
+        success: false
       });
     }
   })();

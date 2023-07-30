@@ -120,7 +120,9 @@ transactionRouter.get("/get-transactions", (req: Request, res: Response) => {
         `TransactionRouter : get-transactions :: Failed to fetch all transactions :: ${err}`
       );
       return res.status(500).json({
+        data: null,
         message: "Error occurred while fetching pre-transaction details",
+        success: false
       });
     }
   })();

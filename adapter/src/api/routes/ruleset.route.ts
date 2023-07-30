@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import * as ruleController from "../controller/ruleset.controller";
 import * as rulesetInterface from "../../interfaces/ruleset.interface";
+import * as auth from "../middleware/auth.middleware";
 
 export const rulesetRouter = express.Router();
 
@@ -14,7 +15,9 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
 
     if (req.body.length === 0) {
       return res.status(400).json({
+        data: null,
         message: "Invalid request body",
+        success: false
       });
     }
 
@@ -43,21 +46,27 @@ rulesetRouter.post("/create-ruleset", (req: Request, res: Response) => {
       );
 
       res.status(500).json({
+        data: null,
         message: "Error occurred while creating ruleset",
+        success: false
       });
     }
   })();
 });
 
-rulesetRouter.post("/claimRuleset", (req: Request, res: Response) => {
+rulesetRouter.use(auth.verifyToken);
+
+rulesetRouter.post("/claim-ruleset", (req: Request, res: Response) => {
   (async () => {
     console.log(
-      `Request received for claimRuleset :: Body: ${JSON.stringify(req.body)}`
+      `RulesetRouter : claim-ruleset :: Request received for claimRuleset: ${JSON.stringify(req.body)}`
     );
 
     if (req.body.length === 0) {
       return res.status(400).json({
+        data: null,
         message: "Invalid request body",
+        success: false
       });
     }
 
@@ -75,38 +84,39 @@ rulesetRouter.post("/claimRuleset", (req: Request, res: Response) => {
         .json(isRuleSetClamed.httpResponseMessage);
     } catch (err) {
       console.error(
-        `Route register: error occurred during claimRuleset: ${err.message}`
+        `RulesetRouter : claim-ruleset :: error occurred during claimRuleset: ${err.message}`
       );
 
       res.status(500).json({
-        message: "Error occurred while claimRuleset!",
+        data: null,
+        message: "Error occurred while claiming offer!",
+        success: false
       });
     }
   })();
 });
 
-rulesetRouter.get("/queryRuleset", (req: Request, res: Response) => {
+rulesetRouter.get("/get-rulesets", (req: Request, res: Response) => {
   (async () => {
     console.log(
-      `Request received for queryRuleset :: Body: ${JSON.stringify(req.body)}`
+      `RulesetRouter : get-rulesets :: Request received to get all rulesets :: Body: ${JSON.stringify(req.body)}`
     );
 
     try {
-      console.log(req.query);
-      const queryId = req.query.queryId;
-
-      const isRuleSetClamed = await ruleController.queryRuleset(queryId);
+      const fetchRulesetsRes = await ruleController.fetchAllRulesets(req.body.user);
 
       res
-        .status(isRuleSetClamed.statusCode)
-        .json(isRuleSetClamed.httpResponseMessage);
+        .status(fetchRulesetsRes.statusCode)
+        .json(fetchRulesetsRes.httpResponseMessage);
     } catch (err) {
       console.error(
-        `Route register: error occurred during queryRuleset: ${err.message}`
+        `RulesetRouter : get-rulesets :: error occurred while fetching all rulesets: ${err.message}`
       );
 
       res.status(500).json({
-        message: "Error occurred while queryRuleset!",
+        data: null,
+        message: "Error occurred while fetching offers!",
+        success: false
       });
     }
   })();
