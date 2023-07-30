@@ -4,6 +4,7 @@ import * as HTTPResponseUtils from "../../utils/httpResponseUtils";
 import * as hlf from "../../utils/hlfClient/hlfClient";
 import * as constants from "../../utils/constants";
 import { randomUUID } from "crypto";
+import { getUser } from "./user.service";
 
 export const createRuleset = async (
   rulesetDetails: rulesetInterface.RuleSet
@@ -43,7 +44,7 @@ export const createRuleset = async (
   }
 };
 
-export const clameRuleSet = async (
+export const claimRuleSet = async (
   rulesetDetails: rulesetInterface.claimRuleset
 ) => {
   try {
@@ -55,28 +56,68 @@ export const clameRuleSet = async (
     return HTTPResponseUtils.okResponse(invokeResponce);
   } catch (err) {
     console.log(
-      `Service register :: Failed to clameRuleSet  with Error: ${err}`
+      `Service register :: Failed to claimRuleSet  with Error: ${err}`
     );
 
     return HTTPResponseUtils.internalServerErrorResponse(
-      "Failed to clameRuleSet user"
+      "Failed to claimRuleSet user"
     );
   }
 };
 
-export const queryRuleset = async (queryId: string) => {
+export const fetchAllRulesets = async (user: userInterface.User) => {
+  console.log(
+    `RulesetService : fetchAllRulesets :: Fetching all rulesets for user ${user.username}`
+  );
+
   try {
-    const invokeResponce = await hlf.query("CashbackContract", "QueryRuleset", [
-      queryId,
-    ]);
-    return HTTPResponseUtils.okResponse(invokeResponce);
+    // Fetch user wallet
+    const userDetails = await getUser(user.username);
+
+    if (!userDetails) {
+      throw new Error(`unable to fetch user details for ${user.username}`);
+    }
+
+    // Fetch available cashback for userthrow new Error(`unable to fetch user details for ${user.username}`)
+    const allRulesetsBuffer = await hlf.invoke(
+      constants.contractName,
+      constants.QUERY_RULESETS,
+      [userDetails.walletAddress]
+    );
+
+    const allRulesetsStr = JSON.parse(allRulesetsBuffer.toString());
+
+    let allRulesets: rulesetInterface.RuleSet[] = [];
+    
+    if (!allRulesetsStr) {
+      return HTTPResponseUtils.okResponse(
+        allRulesets,
+        `Fetched all offers for user ${user.username}`,
+        true
+      );
+    }
+
+    for (const rulesetStr of allRulesetsStr) {
+      const ruleset: rulesetInterface.RuleSet = JSON.parse(rulesetStr);
+      allRulesets.push(ruleset);
+    }
+
+    console.log(
+      `RulesetService : fetchAllRulesets :: Fetched all rulesets for user ${user.username}`
+    );
+
+    return HTTPResponseUtils.okResponse(
+      allRulesets,
+      `Fetched all offers for user ${user.username}`,
+      true
+    );
   } catch (err) {
     console.log(
-      `Service register :: Failed to clameRuleSet  with Error: ${err}`
+      `RulesetService : fetchAllRulesets :: Failed to fetch all rulesets for user ${user.username}: ${err}`
     );
 
     return HTTPResponseUtils.internalServerErrorResponse(
-      "Failed to clameRuleSet user"
+      `Unable to fetch all offers for user ${user.username}`
     );
   }
 };

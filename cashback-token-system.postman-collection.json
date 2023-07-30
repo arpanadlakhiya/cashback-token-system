@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "ba08de83-31ed-4834-8faa-eee5a679e19e",
+		"name": "Cashback Token System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generic",
+			"item": [
+				{
+					"name": "Status call",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user/get-users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"get-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user/get-user/Saloni7",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"get-user",
+								"Saloni7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Saloni7\",\n    \"password\": \"Password@123\",\n    \"email\": \"saloni123@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.globals.set(\"jwt\", jsonData.data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Saloni7\",\n    \"password\": \"Password@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ruleset",
+			"item": [
+				{
+					"name": "Create Ruleset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"docType\": \"\",\n    \"ruleId\": \"\",\n    \"status\": \"\",\n    \"min_txn_limit\": 499,\n    \"max_cashback_limit\": 120,\n    \"cashback_percentage\": 0,\n    \"creation_time\": \"2023-07-29T22:05:04.788Z\",\n    \"expiration_time\": \"2023-08-05T22:05:04.788Z\",\n    \"cashback_expiration_time\": 30,\n    \"user_wallet\": \"0x2473be94d390cfb513ebc3f9d7b0fd99f9913556\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/ruleset/create-ruleset",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ruleset",
+								"create-ruleset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Rulesets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/ruleset/get-rulesets",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ruleset",
+								"get-rulesets"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Get Pre Txn",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": 200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/transaction/get-pre-txn-details",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"transaction",
+								"get-pre-txn-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Simulate Transaction",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"txnId\": \"\",\n    \"docType\": \"\",\n    \"value\": 750,\n    \"timeStamp\": \"\",\n    \"sender\": \"Saloni\",\n    \"senderAddress\": \"0x2473be94d390cfb513ebc3f9d7b0fd99f9913556\",\n    \"receiver\": \"Arpan\",\n    \"receiverAddress\": \"\",\n    \"cashbackUsedValue\": 0,\n    \"cashbackTokenId\": \"\",\n    \"rulesetId\": \"bb482a4b-2961-44de-9436-d9b7ee88a0a8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/transaction/simulate-transaction",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"transaction",
+								"simulate-transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
